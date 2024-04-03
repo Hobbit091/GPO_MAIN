@@ -11,10 +11,6 @@ def show(request):
     rendered_page = template.render(context, request)
     return HttpResponse(rendered_page)
 
-def search1(request):
-    news = sequence_desc.objects.all()
-    return render (request, 'index.html', {'news':news})
-
 def search(request):
     oeis_id = request.GET.get('oeis_id')  
     if oeis_id:
