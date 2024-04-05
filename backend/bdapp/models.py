@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 class sequence_desc(models.Model):
     M_ID = models.AutoField(primary_key=True)
@@ -21,6 +23,11 @@ class interpretation(models.Model):
     example_text = models.TextField(blank=True, null=True)
     example_image = models.ImageField(upload_to='images/')
     example_table = models.TextField(blank=True, null=True)
+    example_image_process = ImageSpecField(source='example_image',
+                                      processors=[ResizeToFill(100, 50)],
+                                      format='JPEG',
+                                      options={'quality': 60})
+
 
 class algorithm(models.Model):
     Alg_ID = models.AutoField(primary_key=True)

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -77,9 +78,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'comb_bd',
+        'NAME': 'rafik_simonov',
         'USER': 'postgres',
-        'PASSWORD': 'Y33kyWWz',
+        'PASSWORD': 'amnyam',
         'HOST': 'localhost',
         'PORT': '5432',
     }
