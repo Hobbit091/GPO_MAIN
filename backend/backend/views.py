@@ -26,7 +26,8 @@ def search1(request):
     return render(request, 'index.html', {'news': news})
 
 def search(request):
-    number=5
+    n = 5  # Общее количество элементов
+    k = 3  # Размер комбинации
     oeis_id = request.GET.get('oeis_id')  
     if oeis_id:
         news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
@@ -37,19 +38,16 @@ def search(request):
             # return HttpResponse(interpretation_modele[0].Interp_ID.example_image_process, content_type = 'image/jpg') вернуть изображение 
 
             result=modele[0].Alg_ID.algorithm_code
-            # json_data = {"number": number}
-            # result = exec(code, json_data)
-            # json_data = json.dumps(result)
-            # response = HttpResponse(json_data, content_type="application/json")
+            n = 5  # Общее количество элементов
+            k = 3  # Размер комбинации
             result=exec(result, globals())
-
-            result=factorial(5)
-
-            response = HttpResponse(result)
-            return response
-        
-            # return HttpResponse(modele[0].Alg_ID.algorithm_code)
-            # return render(request, 'index.html', {'object': modele[0]})
+            combination_generator = CombinationColex(n, k)
+            res=combination_generator.Start()
+            response = HttpResponse(res[0])
+            #return response
+            #return HttpResponse(modele[0].Interp_ID.example_image_process, content_type = 'image/jpg') 
+            #return HttpResponse(modele[0].Alg_ID.algorithm_code)
+            #return render(request, 'index.html', {'object': modele[0]})
         else:
             return HttpResponse('Error: OEIS_ID not found')
     else:
