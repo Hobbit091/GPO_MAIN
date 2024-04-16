@@ -7,4 +7,5 @@ urlpatterns = [
     path('',views.show),
     path('search',views.search),
     path('search1',views.search1),
+    path('solve',views.solve),
 ]
