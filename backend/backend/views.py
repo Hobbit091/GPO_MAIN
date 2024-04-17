@@ -73,7 +73,7 @@ def solve(request):
         res = resp.Start(n,k)
       
     if number_of_params == 3:
-        res = resp.Start(n,k)
+        res = resp.Start(n,k,m)
     
     response = HttpResponse(res)
     return response
