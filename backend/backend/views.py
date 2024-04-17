@@ -66,38 +66,15 @@ def solve(request):
     result=exec(result, globals())
     #combination_generator = CombinationColex(n, k)
     #resp = CombinationColex()
-    res = resp.Start(n,k)
+    if number_of_params == 1:
+        res = resp.Start(n)
+        
+    if number_of_params == 2:
+        res = resp.Start(n,k)
+      
+    if number_of_params == 3:
+        res = resp.Start(n,k)
+    
     response = HttpResponse(res)
     return response
-    # if number_of_params == 1:
-    #     n = 5 
-    #     k = 3  
-    #     result=exec(result, globals())
-    #     #combination_generator = CombinationColex(n, k)
-    #     res=combination_generator.Start()
-    #     response = HttpResponse(res[0])
-    #     return response
-    # if number_of_params == 2:
-    #     n = 5  
-    #     k = 3  
-    #     result=exec(result, globals())
-    #     #combination_generator = CombinationColex(n, k)
-    #     res=combination_generator.Start()
-    #     response = HttpResponse(res[0])
-    #     return response
-    # if number_of_params == 3:
-    #     n = 5 
-    #     k = 3  
-    #     result=exec(result, globals())
-    #     #combination_generator = CombinationColex(n, k)
-    #     res=combination_generator.Start()
-    #     response = HttpResponse(res[0])
-    #     return response
-    # if number_of_params == 4:
-    #     n = 5  
-    #     k = 3  
-    #     result=exec(result, globals())
-    #     #combination_generator = CombinationColex(n, k)
-    #     res=combination_generator.Start()
-    #     response = HttpResponse(res[0])
-    #     return response
+    
