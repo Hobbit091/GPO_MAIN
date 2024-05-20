@@ -45,6 +45,35 @@ def search_InterpSelect(request): #Получить на сколько инте
     else:
         return HttpResponse('Error')
 
+def search_SeqSelect(request): #Получить список последовательностей объектом, дальше параметрами можно вытягивать все что угодно 
+    news=[]
+    news = sequence_desc.objects.all()
+    response = HttpResponse(news)
+    return response
+
+def alg_TableTitle(request): #Получить списком то какие поля будут у таблицы
+    alg_name = request.GET.get('alg_name')
+    if alg_name:
+        news = algorithm.objects.filter(alg_name=alg_name)
+        if news:
+            response=HttpResponse(news[0].alg_table_title.split(","))
+            return response
+        else:
+            return HttpResponse('Error: Alg not found')
+    else:
+        return HttpResponse('Error')
+
+
+def interp_Select(request): #Получить интепретацию по ID, которое будет взято из селектора
+    interp_id = request.GET.get('interp_id')
+    if interp_id:
+        news = interpretation.objects.filter(Interp_ID=interp_id)
+        if news:
+            return HttpResponse(news)
+        else:
+            return HttpResponse('Error: Interpretation not found')
+    else:
+        return HttpResponse('Error')
 
 def solve(request): #Выполнить код который хранится в бд
     oeis_id = request.GET.get('oeis_id')

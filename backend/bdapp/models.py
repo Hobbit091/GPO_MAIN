@@ -36,12 +36,13 @@ class interpretation(models.Model):
 
 class algorithm(models.Model):
     Alg_ID = models.AutoField(primary_key=True)
-    alg_name = models.TextField()
-    title = models.TextField()
+    alg_table_title = models.CharField(default="Описание алгоритма, Формула мощности, Структура дерева И/ИЛИ, Псевдокод алгоритма, Источник иформации")
     number_of_parameters = models.IntegerField()
     parameters_name = models.TextField()
-    capacity_formula = models.TextField(blank=True, null=True)
-    capacity_formula_latex = models.TextField(blank=True, null=True)
+    alg_name = models.TextField()
+    description = models.TextField()
+    field1_text = models.TextField(blank=True, null=True)
+    field2_text = models.TextField(blank=True, null=True)
     tree_structure = models.ImageField(upload_to='images/')
     pseudocode = models.TextField(blank=True, null=True)
     algorithm_code = models.TextField(blank=True, null=True)
