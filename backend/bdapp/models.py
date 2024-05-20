@@ -15,6 +15,9 @@ class sequence_desc(models.Model):
     recurrent_formula_latex = models.TextField(blank=True, null=True)
     generating_function = models.TextField(blank=True, null=True)
     generating_function_latex = models.TextField(blank=True, null=True)
+    
+    def __str__(self):
+        return self.special_title
 
 class interpretation(models.Model):
     Interp_ID = models.AutoField(primary_key=True)
@@ -27,7 +30,9 @@ class interpretation(models.Model):
                                       processors=[ResizeToFill(100, 50)],
                                       format='JPEG',
                                       options={'quality': 60})
-
+     
+    def __str__(self):
+        return F"{self.Interp_ID}"
 
 class algorithm(models.Model):
     Alg_ID = models.AutoField(primary_key=True)
@@ -42,7 +47,15 @@ class algorithm(models.Model):
     algorithm_code = models.TextField(blank=True, null=True)
     href_code = models.TextField(blank=True, null=True)
 
+     
+    def __str__(self):
+        return self.title
+
 class sequence_tb(models.Model):
     M_ID = models.ForeignKey(sequence_desc, on_delete=models.CASCADE)
     Alg_ID = models.ForeignKey(algorithm, on_delete=models.CASCADE)
     Interp_ID = models.ForeignKey(interpretation, on_delete=models.CASCADE)
+
+     
+    def __str__(self):
+        return F"{self.M_ID}"
