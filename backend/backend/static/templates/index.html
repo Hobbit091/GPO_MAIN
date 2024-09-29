@@ -28,6 +28,7 @@
                 <div class="header_search">
                     <form method="get" action="/search">
                         <input method="get" type="text" name="oeis_id">
+                        <input method="get" type="text" name="interp_id">
                         <input type="submit" value="Search">
                     </form>
                 </div>
@@ -48,15 +49,15 @@
                 </div>
                 {% block content %}
 
-                    {% for el in news %}
+                    {% for el in object %}
  
                         <div class="main__text-info">  
-                            <p>{{el.OEIS_ID}}</p>
-                            <p>{{el.special_title}}</p>
-                            <p>{{el.number_of_parameters}}</p>
-                            <p>$${{el.recurrent_formula_latex}}$$</p>
-                            <p>$${{el.explicit_formula_latex}}$$</p>
-                            <p>$${{el.generating_function_latex}}$$</p>    
+                            <p>{{el.M_ID.OEIS_ID}}</p>
+                            <p>{{el.M_ID.special_title}}</p>
+                            <p>{{el.M_ID.number_of_parameters}}</p>
+                            <p>$${{el.M_ID.recurrent_formula_latex}}$$</p>
+                            <p>$${{el.M_ID.explicit_formula_latex}}$$</p>
+                            <p>$${{el.M_ID.generating_function_latex}}$$</p>    
                         </div>
 
                     {% endfor %}
@@ -69,9 +70,18 @@
                     КОМБИНАТОРНАЯ ИНТЕРПРЕТАЦИЯ
                 </div>
                 <div class="main__text-interp-info">
- 
+                {% block content1 %}
+
+                        {% for el in object %}
+
                         <div class="main__text-info">  
+                            <p>{{el.Interp_ID.Interp_ID}}</p>
+                            <p>{{el.Interp_ID.description}}</p>
                         </div>
+
+                        {% endfor %}
+              
+                {% endblock %}
                 </div>
             </section>
         </div>
