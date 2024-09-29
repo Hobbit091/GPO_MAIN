@@ -4,10 +4,14 @@ from django.shortcuts import render
 import psycopg2
 import json
 
+from bdapp.exceptions.OEISID import OEIS_IDNotFoundException
+from bdapp.exceptions.base import ApplicationException
 from bdapp.models import sequence_desc
 from bdapp.models import interpretation 
 from bdapp.models import sequence_tb 
 from bdapp.models import algorithm
+from django.http import HttpResponseBadRequest
+
 
 def show(request): #Заглушка, чтобы загружать стартову страницу
     template = loader.get_template('index.html')
@@ -16,16 +20,26 @@ def show(request): #Заглушка, чтобы загружать старто
     return HttpResponse(rendered_page)
 
 def search_sequence(request): # Вывести инфу о определенной последовательности
-    oeis_id = request.GET.get('oeis_id')
-    if oeis_id:
+    # oeis_id = request.GET.get('oeis_id')
+    try:
+        oeis_id = request.GET.get('oeis_id')
         news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-        if news:
+        if news:            
             response = HttpResponse(news)
             return response
         else:
-            return HttpResponse('Error: OEIS_ID not found')
-    else:
-        return HttpResponse('Error')
+            raise OEIS_IDNotFoundException(oeis_id=oeis_id)
+    except ApplicationException as exception:
+       return HttpResponseBadRequest(content=exception.message)
+    # if oeis_id:
+    #     news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
+    #     if news:
+    #         response = HttpResponse(news)
+    #         return response
+    #     else:
+    #         return HttpResponse('Error: OEIS_ID not found')
+    # else:
+    #     return HttpResponse('Error')
 
 def search_InterpSelect(request): #Получить на сколько интерпретаций селекттор и сами интепретации, чтобы вставить в селектор. На выход идет лист, из него обращаться 
     list_interp=[]
@@ -86,15 +100,16 @@ def solve(request): #Выполнить код который хранится �
             number_of_params = modele[0].Alg_ID.number_of_parameters
             n = 5 #Сюда вбить параметры с формы, смотря сколько их
             k = 3  
+            m= 4
             result=exec(result, globals())
             if number_of_params == 1:
-                res = resp.Start(n)
+                res = result.Start(n)
                 
             if number_of_params == 2:
-                res = resp.Start(n,k)
+                res = result.Start(n,k)
             
             if number_of_params == 3:
-                res = resp.Start(n,k,m)
+                res = result.Start(n,k,m)
             
             response = HttpResponse(res)
             return response
