@@ -50,7 +50,7 @@ class algorithm(models.Model):
 
      
     def __str__(self):
-        return self.title
+        return self.alg_name
 
 class sequence_tb(models.Model):
     M_ID = models.ForeignKey(sequence_desc, on_delete=models.CASCADE)

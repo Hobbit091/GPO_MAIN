@@ -23,7 +23,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='django-insecure-wgx#ehwk8a*w$@##ef3viv((n8z5v6+gr@-b1sak(zofmsnykd')
+SECRET_KEY = 'django-insecure-wgx#ehwk8a*w$@##ef3viv((n8z5v6+gr@-b1sak(zofmsnykd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -77,14 +77,24 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('POSTGRES_DB'),
+#         'USER': env('POSTGRES_USER'),
+#         'PASSWORD': env('POSTGRES_PASSWORD'),
+#         'HOST': env('POSTGRES_HOST'),
+#         'PORT': env('POSTGRES_PORT'),
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT'),
+        'NAME': 'rafik_simonov',
+        'USER': 'postgres',
+        'PASSWORD': 'amnyam',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
