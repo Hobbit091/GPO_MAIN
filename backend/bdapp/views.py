@@ -122,7 +122,7 @@ def interp_Select(request): #Получить интепретацию по ID, 
     # else:
     #     return HttpResponse('Error')
 
-def solve(request): #Выполнить код который хранится в бд
+def solve(request): 
     try:
         oeis_id = request.GET.get('oeis_id')
         news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
@@ -151,31 +151,4 @@ def solve(request): #Выполнить код который хранится �
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
-    # oeis_id = request.GET.get('oeis_id')
-    # if oeis_id:
-    #     news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-    #     if news:
-    #         m_id = news[0].M_ID
-    #         modele= sequence_tb.objects.filter(M_ID=m_id)
-    #         result=modele[0].Alg_ID.algorithm_code
-    #         number_of_params = modele[0].Alg_ID.number_of_parameters
-    #         n = 5 #Сюда вбить параметры с формы, смотря сколько их
-    #         k = 3  
-    #         m= 4
-    #         result=exec(result, globals())
-    #         if number_of_params == 1:
-    #             res = result.Start(n)
-                
-    #         if number_of_params == 2:
-    #             res = result.Start(n,k)
-            
-    #         if number_of_params == 3:
-    #             res = result.Start(n,k,m)
-            
-    #         response = HttpResponse(res)
-    #         return response
-    #     else:
-    #         return HttpResponse('Error: OEIS_ID not found')
-    # else:
-    #     return HttpResponse('Error')
-        
+  
