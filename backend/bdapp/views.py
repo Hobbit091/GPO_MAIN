@@ -151,4 +151,8 @@ def solve(request):
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
+
+def main_view(request):
+    return render(request, 'main.html')
+    
   

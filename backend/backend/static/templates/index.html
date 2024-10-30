@@ -1,93 +1,85 @@
-{% load static %}
-<!DOCTYPE HTML>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8">
-    <title>Название страницы</title>
-    <meta name="description" content="Описание страницы" />
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css'%}"/>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <body>
-    <header class="header">
-            <div class="header_logo" action="">
-                <a>
-                    <img src="{% static 'assets/logo.svg'%}" alt="">
-                </a>
-            </div>
-            <div class="header_container">
-                <nav class="header_navigation">
-                    <a >A000045</a>
-                </nav>
-                <select class="header__select">
-                    <option>Интерпретация 1</option>
-                    <option>Интерпретация 2</option>
-                    <option>Интерпретация 3</option>
-                    <option>Интерпретация 4</option>
-                </select>
-                <div class="header_search">
-                    <form method="get" action="/search">
-                        <input method="get" type="text" name="oeis_id">
-                        <input method="get" type="text" name="interp_id">
-                        <input type="submit" value="Search">
-                    </form>
-                </div>
-            </div>
-    </header>
-    
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles\styles.css'%}"/>
+  <title>CGCAL</title>
+</head>
 
+<body>
+  <div class="switcher__wrapper">
+    <div class="switcher-language">
+      <div class="switcher-option active" id="ru" onclick="switchLanguage('ru')">RU</div>
+      <div class="switcher-option" id="en" onclick="switchLanguage('en')">EN</div>
+    </div>
+  </div>
 
-    
+  <div class="home">
+    <div class="home__logo">
+      <picture class="home__picture">
+        <img src="static\assets\images\logo.jpg" class="home__img" alt="CGCAL" />
+      </picture>
 
-    <main>
-        <div class="main__container_info">
-           
-            <section class="main__info">
-                <div class="main__green-title">
-                    ЧИСЛОВАЯ ПОСЛЕДОВАТЕЛЬНОСТЬ
-                </div>
-                {% block content %}
+      <div class="home__name">
+        Combinatorial Generation Algorithms
+      </div>
+    </div>
 
-                    {% for el in object %}
- 
-                        <div class="main__text-info">  
-                            <p>{{el.M_ID.OEIS_ID}}</p>
-                            <p>{{el.M_ID.special_title}}</p>
-                            <p>{{el.M_ID.number_of_parameters}}</p>
-                            <p>$${{el.M_ID.recurrent_formula_latex}}$$</p>
-                            <p>$${{el.M_ID.explicit_formula_latex}}$$</p>
-                            <p>$${{el.M_ID.generating_function_latex}}$$</p>    
-                        </div>
+    <div class="home__find">
+      <input type="text" name="find" placeholder="Поисковой запрос" class="home__find-input">
 
-                    {% endfor %}
-              
-                {% endblock %}
-            </section>
-        
-            <section class="main__interp-info">
-                <div class="main__green-title">
-                    КОМБИНАТОРНАЯ ИНТЕРПРЕТАЦИЯ
-                </div>
-                <div class="main__text-interp-info">
-                {% block content1 %}
+      <button class="home__find-button">
+        НАЙТИ
+      </button>
 
-                        {% for el in object %}
+      <div class="home__find-href">
+        <a href="" class="home__find-href-content">
+          A000000
+        </a>
+        <a href="" class="home__find-href-content">
+          A000000
+        </a>
+        <a href="" class="home__find-href-content">
+          A000000
+        </a>
+        <a href="" class="home__find-href-content">
+          A000000
+        </a>
+      </div>
 
-                        <div class="main__text-info">  
-                            <p>{{el.Interp_ID.Interp_ID}}</p>
-                            <p>{{el.Interp_ID.description}}</p>
-                        </div>
+    </div>
 
-                        {% endfor %}
-              
-                {% endblock %}
-                </div>
-            </section>
-        </div>
-    </main>
-    <footer>
-      Подвал
-    </footer>
-  </body>
+    <div class="home__desc">
+      Онлайн-энциклопедия, содержащая систематизированную информацию о существующих алгоритмах комбинаторной генерации, их свойствах и имеющиеся ограничения применения.
+    </div>
+
+    <div class="home__about">
+      <a href="" class="home__find-href-content">
+        О команде
+      </a>
+      <a href="" class="home__find-href-content">
+        Помощь по сайту
+      </a>
+    </div>
+  </div>
+
+  <div class="costil">
+    <a href="main">тык</a>
+  </div>
+
+  <div class="footer__wrapper">
+    <div class="footer">
+      <div class="footer__text">
+        Последнее обновление 11.09.2024
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="static\scripts\main.min.js"></script>
+
 </html>

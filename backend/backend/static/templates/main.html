@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles\styles.css'%}"/>
+  <title>CGCAL</title>
+</head>
+
+<body>
+  <div class="header__wrapper">
+    <div class="main__header">
+
+      <div class="main__header-logo">
+
+        <picture class="main__header-picture">
+          <a  href="home" > <img src="static\assets\images\logo_white.png" class="home__img" alt="CGCAL" width="100px" height="70px"/></a>
+        </picture>
+        <div class="main__header-name">
+          A000000
+        </div>
+      </div>
+
+      <div class="main__header-selector">
+        <select class="main__header-select">
+          <option>Комбинаторные интерпретации</option>
+          <option>Другой вариант</option>
+        </select>
+      </div>
+
+      <div class="main__header-search-box">
+        <input type="text" placeholder="Введите номер последовательности" class="main__header-search-input">
+        <button class="main__header-search-button">Найти</button>
+      </div>
+    </div>
+  </div>
+  <div class="info__wrapper">
+    <div class="info__block">
+      <div class="info__name">
+        
+      </div>
+      <div class="info__desc">
+        что то о последовательности
+      </div>
+    </div>
+
+    <div class="info__block">
+      <div class="info__name">
+        Комбинаторная интерпретация
+      </div>
+      <div class="info__desc">
+        что то о интерпретации
+      </div>
+    </div>
+  </div>
+  <div class="func-block-wrapper">
+    <div class="func-block__left">
+
+      <div class="func-block__left-choose">
+        <div class="h4" class="func-block__left-text">Алгоритм комбинаторной генерации</div>
+        <select class="func-block__left-select">
+          <option>Rank</option>
+          <option>Unrank</option>
+          <option>Listing</option>
+        </select>
+      </div>
+
+
+      <div class="func-block__left-functional">
+        <div class="func-block__left-param">
+          <div> N=
+            <input type="text" class="func-block__left-param-input">
+          </div>
+          <div> M=
+            <input type="text" class="func-block__left-param-input">
+          </div>
+        </div>
+        <div class="func-block__left-object">
+          Комбинаторный объект
+        </div>
+        <input type="text" class="func-block__left-param-input func-block__left-param-input--wd500">
+      </div>
+
+      <div class="func-block__left-solve">
+        <button class="func-block__left-button">
+          Вычислить
+        </button>
+        <textarea class="func-block__left-main_textarea" id="">
+            </textarea>
+      </div>
+    </div>
+
+    <div class="func-block__right">
+      <div class="func-block__right-name">Описание алгоритма</div>
+      <div class="func-block__right-desc">Количества параметров: 2</div>
+
+      <div class="func-block__right-name">Формула мощности</div>
+      <div class="func-block__right-desc">Fn = Fn - 1 + Fn - 2</div>
+
+      <div class="func-block__right-name">Структура дерева И/ИЛИ</div>
+      <div class="func-block__right-desc"></div>
+    </div>
+  </div>
+  <div class="footer__wrapper">
+    <div class="footer">
+      <div class="footer__text">
+        Последнее обновление 11.09.2024
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
