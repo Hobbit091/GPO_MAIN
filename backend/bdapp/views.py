@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from django.http import JsonResponse
+
 from django.template import loader
 from django.shortcuts import render
 import psycopg2
@@ -21,44 +23,56 @@ def show(request): #Заглушка, чтобы загружать старто
     rendered_page = template.render(context, request)
     return HttpResponse(rendered_page)
 
-def search_sequence(request): # Вывести инфу о определенной последовательности
-    try:
-        oeis_id = request.GET.get('oeis_id')
-        news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-        if news:            
-            response = HttpResponse(news)
-            return response
-        else:
-            raise OEIS_IDNotFoundException(oeis_id=oeis_id)
-    except ApplicationException as exception:
-       return HttpResponseBadRequest(content=exception.message)
-    # if oeis_id:
-    #     news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-    #     if news:
-    #         response = HttpResponse(news)
-    #         return response
-    #     else:
-    #         return HttpResponse('Error: OEIS_ID not found')
-    # else:
-    #     return HttpResponse('Error')
 
-def search_InterpSelect(request): #Получить на сколько интерпретаций селекттор и сами интепретации, чтобы вставить в селектор. На выход идет лист, из него обращаться 
+
+def search_sequence(request): 
     try:
-        list_interp=[]
+        list_seq = []
         oeis_id = request.GET.get('oeis_id')
-        news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
+        news = sequence_desc.objects.filter(OEIS_ID=oeis_id).first()
         if news:
-            m_id = news[0].M_ID
-            sequence_tb_object_count = sequence_tb.objects.filter(M_ID=m_id).count()
-            interpretation_modele= sequence_tb.objects.filter(M_ID=m_id)
-            for i in range(0,sequence_tb_object_count):
-                list_interp.append(interpretation_modele[i].Interp_ID)
-            response = HttpResponse(list_interp)
-            return response
+            list_seq.append({
+                'id': news.OEIS_ID,  # ID интерпретации
+                'name': news.special_title,  # Описание
+               })
+            return JsonResponse(list_seq, safe=False)
         else:
             raise OEIS_IDNotFoundException(oeis_id=oeis_id)
+
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
+
+
+def search_InterpSelect(request): 
+    try:
+        list_interp = []
+        oeis_id = request.GET.get('oeis_id')
+        news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
+
+        if news:
+            m_id = news[0].M_ID
+            # Получаем все записи из sequence_tb, связанные с текущим M_ID
+            sequence_records = sequence_tb.objects.filter(M_ID=m_id)
+
+            for record in sequence_records:
+                # Извлекаем интерпретацию по Interp_ID из текущей записи
+                interpretation_instance = record.Interp_ID
+                list_interp.append({
+                    'id': interpretation_instance.Interp_ID,  # ID интерпретации
+                    'n_value': interpretation_instance.n_value,  # Описание
+                    'desc': interpretation_instance.description,  # Описание
+                    'example_text': interpretation_instance.example_text,  # Описание
+                    #'example_image': interpretation_instance.example_image,  # Описание
+                    'example_table': interpretation_instance.example_table,  # Описание
+                  # 'example_image_process': interpretation_instance.example_image_process,  # Описание
+                })
+            return JsonResponse(list_interp, safe=False)
+        else:
+            raise OEIS_IDNotFoundException(oeis_id=oeis_id)
+
+    except ApplicationException as exception:
+        return HttpResponseBadRequest(content=exception.message)
+    
     # list_interp=[]
     # oeis_id = request.GET.get('oeis_id')
     # if oeis_id:
@@ -103,14 +117,26 @@ def alg_TableTitle(request): #Получить списком то какие п
     #     return HttpResponse('Error')
 
 
-def interp_Select(request): #Получить интепретацию по ID, которое будет взято из селектора
+def interp_Select(request):  # Получить интерпретацию по description
     try:
-        interp_id = request.GET.get('interp_id')
-        news = interpretation.objects.filter(Interp_id=interp_id)
-        if news:
-            return HttpResponse(news)
+        description = request.GET.get('description')  # Получаем description из GET-запроса
+        news = interpretation.objects.filter(description=description)  # Фильтруем по description
+
+        if news.exists():  # Проверяем, есть ли результаты
+            # Преобразуем результаты в список словарей
+            interpretations_list = [
+                {
+                    'id': interp.Interp_ID,
+                    'n_value': interp.n_value,
+                    'description': interp.description,
+                    'example_text': interp.example_text,
+                    # Добавьте другие поля, которые хотите вернуть
+                }
+                for interp in news
+            ]
+            return JsonResponse(interpretations_list, safe=False)  # Возвращаем данные в формате JSON
         else:
-            raise Interpritation_Selector_IDNotFoundException()
+            raise Interpritation_Selector_IDNotFoundException(interpritation_id="")
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     # if interp_id:
@@ -151,8 +177,5 @@ def solve(request):
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
-
 def main_view(request):
     return render(request, 'main.html')
-    
-  
