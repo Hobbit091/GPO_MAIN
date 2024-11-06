@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             selector.appendChild(option);
           });
 
+
         loadInterpretations_details();
         } else {
           console.error('Ошибка при загрузке интерпретаций');
@@ -84,13 +85,16 @@ async function loadInterpretations_details() {
             <div> Значения a(n) определяет количество ${interpData[0].n_value} элементов</div>
             <div> Определение интерпретации: ${interpData[0].description} </div>
             <div> Пример: </div>
+            <div style="display:none" class="for_interp_id">${interpData[0].id}</div>
             <div>${interpData[0].example_text}</div>
             <div>${interpData[0].example_table}</div>
           `;
-
       } else {
         console.error('Ошибка при загрузке последовательности');
       }
+
+      loadAlgorithmsByInterpretation();
+     
     } catch (error) {
       console.error('Произошла ошибка:', error);
     }
@@ -100,3 +104,27 @@ const selector = document.querySelector('.main__header-select');
 selector.addEventListener('change', function(event) {
   loadInterpretations_details();
 });
+
+async function loadAlgorithmsByInterpretation(Interp_ID) {
+  try {
+    const Interp_ID = document.querySelector('.for_interp_id').textContent.trim();
+    const response = await fetch(`/alg?interp_id=${Interp_ID}`);
+    if (response.ok) {
+      const algorithms = await response.json();
+      const selector_alg = document.querySelector('.func-block__left-select');
+      selector_alg.innerHTML = ''; // Очищаем текущие опции
+
+      algorithms.forEach((alg) => {
+        const option = document.createElement('option');
+        option.textContent = alg.name; // Название алгоритма
+        option.value = alg.id; // ID алгоритма
+        selector_alg.appendChild(option);
+      });
+    } else {
+      console.error('Ошибка при загрузке алгоритмов');
+    }
+  } catch (error) {
+    console.error('Произошла ошибка:', error);
+  }
+}
+

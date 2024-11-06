@@ -66,8 +66,6 @@ def search_InterpSelect(request):
                     'desc': interpretation_instance.description,  # Описание
                     'example_table': interpretation_instance.example_table,
                     'example_text': interpretation_instance.example_text,  # Описание
-                    #'example_image': interpretation_instance.example_image,  # Описание
-                    #'example_image_process': interpretation_instance.example_image_process,  # Описание
                 })
             return JsonResponse(list_interp, safe=False)
         else:
@@ -76,22 +74,6 @@ def search_InterpSelect(request):
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
-    # list_interp=[]
-    # oeis_id = request.GET.get('oeis_id')
-    # if oeis_id:
-    #     news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-    #     if news:
-    #         m_id = news[0].M_ID
-    #         sequence_tb_object_count = sequence_tb.objects.filter(M_ID=m_id).count()
-    #         interpretation_modele= sequence_tb.objects.filter(M_ID=m_id)
-    #         for i in range(0,sequence_tb_object_count):
-    #             list_interp.append(interpretation_modele[i].Interp_ID)
-    #         response = HttpResponse(list_interp)
-    #         return response
-    #     else:
-    #         return HttpResponse('Error: OEIS_ID not found')
-    # else:
-    #     return HttpResponse('Error')
 
 def search_SeqSelect(request): #Получить список последовательностей объектом, дальше параметрами можно вытягивать все что угодно 
     news=[]
@@ -119,6 +101,37 @@ def alg_TableTitle(request): #Получить списком то какие п
     # else:
     #     return HttpResponse('Error')
 
+def alg_Select(request):
+    interp_id = request.GET.get('interp_id')  # Получаем ID интерпретации из запроса
+    if not interp_id:
+        return JsonResponse({"error": "interp_id is required"}, status=400)
+    
+    try:
+        # Находим все записи sequence_tb, связанные с выбранной интерпретацией
+        sequences = sequence_tb.objects.filter(Interp_ID=interp_id)
+        algorithm_ids = [seq.Alg_ID_id for seq in sequences]  # Получаем список Alg_ID для связанных записей
+
+        # Получаем алгоритмы из модели algorithm по Alg_ID
+        algorithms = algorithm.objects.filter(Alg_ID__in=algorithm_ids)
+        algorithms_data = [
+            {
+                'id': alg.Alg_ID,
+                'name': alg.alg_name,
+                'table_title': alg.alg_table_title,
+                'number_of_parameters': alg.number_of_parameters,
+                'parameters_name': alg.parameters_name,
+                'description': alg.description,
+                'field1_text': alg.field1_text,
+                'field2_text': alg.field2_text,
+            }
+            for alg in algorithms
+        ]
+
+        return JsonResponse(algorithms_data, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+    
 
 def interp_Select(request):  # Получить интерпретацию по description
     try:

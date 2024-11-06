@@ -342,6 +342,12 @@ body {
 .info__block {
   margin-bottom: 20px;
 }
+
+.info__block__text{
+  padding-left: 10px;
+  gap: 5px;
+}
+
 .func-block-wrapper {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
