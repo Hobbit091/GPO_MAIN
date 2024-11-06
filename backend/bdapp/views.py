@@ -32,8 +32,14 @@ def search_sequence(request):
         news = sequence_desc.objects.filter(OEIS_ID=oeis_id).first()
         if news:
             list_seq.append({
-                'id': news.OEIS_ID,  # ID интерпретации
-                'name': news.special_title,  # Описание
+                'id': news.OEIS_ID,  
+                'name': news.special_title,  
+                'number_of_parameters': news.number_of_parameters,  
+                'explicit_formula_latex': news.explicit_formula_latex,  
+                'recurrent_formula': news.recurrent_formula,  
+                'recurrent_formula_latex': news.recurrent_formula_latex,  
+                'other_formula_latex': news.other_formula_latex,  
+                'generating_function_latex': news.generating_function_latex,  
                })
             return JsonResponse(list_seq, safe=False)
         else:
@@ -41,7 +47,6 @@ def search_sequence(request):
 
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
-
 
 def search_InterpSelect(request): 
     try:
@@ -51,20 +56,18 @@ def search_InterpSelect(request):
 
         if news:
             m_id = news[0].M_ID
-            # Получаем все записи из sequence_tb, связанные с текущим M_ID
             sequence_records = sequence_tb.objects.filter(M_ID=m_id)
 
             for record in sequence_records:
-                # Извлекаем интерпретацию по Interp_ID из текущей записи
                 interpretation_instance = record.Interp_ID
                 list_interp.append({
                     'id': interpretation_instance.Interp_ID,  # ID интерпретации
                     'n_value': interpretation_instance.n_value,  # Описание
                     'desc': interpretation_instance.description,  # Описание
+                    'example_table': interpretation_instance.example_table,
                     'example_text': interpretation_instance.example_text,  # Описание
                     #'example_image': interpretation_instance.example_image,  # Описание
-                    'example_table': interpretation_instance.example_table,  # Описание
-                  # 'example_image_process': interpretation_instance.example_image_process,  # Описание
+                    #'example_image_process': interpretation_instance.example_image_process,  # Описание
                 })
             return JsonResponse(list_interp, safe=False)
         else:

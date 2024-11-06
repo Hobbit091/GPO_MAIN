@@ -333,6 +333,12 @@ body {
   background-color: #FFFFFF;
   border-radius: 0 0 10px 10px;
 }
+.main_info_formula
+{
+  display: flex;
+  align-items: end;
+  padding-left: 50px;
+}
 .info__block {
   margin-bottom: 20px;
 }
@@ -510,6 +516,21 @@ body {
           justify-content: center;
   text-align: center;
 }
+
+table {
+  width: 30%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+th {
+  background-color: #d6e0f5; /* светло-синий цвет */
+}
+
 @media (max-width:1659px) {
   .main__header {
     -webkit-box-orient: horizontal;

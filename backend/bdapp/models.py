@@ -24,7 +24,7 @@ class interpretation(models.Model):
     n_value = models.TextField()
     description = models.TextField()
     example_text = models.TextField(blank=True, null=True)
-    example_image = models.ImageField(upload_to='images/')
+    example_image = models.ImageField(upload_to='images/', blank=True, null=True)
     example_table = models.TextField(blank=True, null=True)
     example_image_process = ImageSpecField(source='example_image',
                                       processors=[ResizeToFill(100, 50)],
@@ -43,7 +43,7 @@ class algorithm(models.Model):
     description = models.TextField()
     field1_text = models.TextField(blank=True, null=True)
     field2_text = models.TextField(blank=True, null=True)
-    tree_structure = models.ImageField(upload_to='images/')
+    tree_structure = models.ImageField(upload_to='images/',blank=True, null=True)
     pseudocode = models.TextField(blank=True, null=True)
     algorithm_code = models.TextField(blank=True, null=True)
     href_code = models.TextField(blank=True, null=True)

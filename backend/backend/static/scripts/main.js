@@ -38,12 +38,24 @@ document.addEventListener('DOMContentLoaded', function() {
           if (response.ok) {
             const sequenceData = await response.json();
             const infoWrapper = document.querySelector('.info__block1');
-            
-            // Обновляем информацию в блоке info__wrapper
             infoWrapper.innerHTML = `
-              <div class="info__name">${sequenceData[0].id}</div>
-              <div class="info__desc">${sequenceData[0].name}</div>
-            `;
+                  <h4 style="text-decoration:underline"> Начальные значения </h4>
+                  <div>${sequenceData[0].recurrent_formula}</div>
+                  <div>Значения a(n) так известны как ${sequenceData[0].name}</div>
+                  <div>Значения a(n) зависят от ${sequenceData[0].number_of_parameters} параметров</div>
+                  <h4 style="text-decoration:underline"> Основные формулы </h4>
+                  <div style="padding-left:10px"> Явная формула </div>
+                  <div class="main_info_formula"> $$${sequenceData[0].explicit_formula_latex}$$</div>
+                   <div style="padding-left:10px"> Рекуррентная формула: </div>
+                  <div class="main_info_formula">$$${sequenceData[0].recurrent_formula_latex}$$</div>
+                   <div style="padding-left:10px"> Другая формула </div>
+                  <div class="main_info_formula">$$${sequenceData[0].other_formula_latex}$$</div>
+                   <div style="padding-left:10px"> Производящая функция</div>
+                  <div class="main_info_formula">$$${sequenceData[0].generating_function_latex}$$</div>
+            `; 
+
+          MathJax.typesetPromise([infoWrapper]).catch((err) => console.log(err.message));
+
           } else {
             console.error('Ошибка при загрузке последовательности');
           }
@@ -69,10 +81,11 @@ async function loadInterpretations_details() {
         const interpData = await response.json();
         const infoWrapper = document.querySelector('.info__block2');
             infoWrapper.innerHTML = `
-            <div>${interpData[0].id}</div>
-            <div>${interpData[0].n_value}</div>
-            <div>${interpData[0].description}</div>
-            <div">${interpData[0].example_text}</div>
+            <div> Значения a(n) определяет количество ${interpData[0].n_value} элементов</div>
+            <div> Определение интерпретации: ${interpData[0].description} </div>
+            <div> Пример: </div>
+            <div>${interpData[0].example_text}</div>
+            <div>${interpData[0].example_table}</div>
           `;
 
       } else {
