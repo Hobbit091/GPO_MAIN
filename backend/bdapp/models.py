@@ -17,7 +17,8 @@ class sequence_desc(models.Model):
     generating_function_latex = models.TextField(blank=True, null=True)
     
     def __str__(self):
-        return self.special_title
+        return f"{self.special_title} - {self.OEIS_ID}"
+    
 
 class interpretation(models.Model):
     Interp_ID = models.AutoField(primary_key=True)
