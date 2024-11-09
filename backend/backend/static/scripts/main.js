@@ -142,6 +142,7 @@ async function loadAlgorithm_details() {
     const response = await fetch(`/algDetails?algName=${algName}`);
     if (response.ok) {
       const algData = await response.json();
+      
       const infoWrapper = document.querySelector('.func-block__right'); // Находим основной контейнер
       infoWrapper.innerHTML = ''; 
 
@@ -164,7 +165,6 @@ async function loadAlgorithm_details() {
 
       </div>
     `;
-
     const infoWrapper2 = document.querySelector('.func-block__left-param'); // Находим основной контейнер
     const infoWrapper3 = document.querySelector('.func-block__left-functional'); // Находим основной контейнер
     infoWrapper2.innerHTML = ''; 
@@ -202,6 +202,10 @@ selectorAlg.addEventListener('change', function(event) {
 
 async function solve() {
   const inputs = document.querySelectorAll(".func-block__left-param-input"); // Находим все динамические input
+  const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
+  const response = await fetch(`/algDetails?algName=${algName}`);
+  const algData = await response.json();
+  var alg_id = algData[0].id
   const params = {};
 
   inputs.forEach((input, index) => {
@@ -217,8 +221,11 @@ async function solve() {
               'Content-Type': 'application/json',
               'X-CSRFToken': csrfToken  // Добавляем CSRF-токен в заголовок
           },
-          body: JSON.stringify(params),
-      });
+          body: JSON.stringify({
+            params: params,  // Передаем объект параметров
+            alg_id: alg_id   // Передаем идентификатор алгоритма
+        }),
+    });
 
       if (!response.ok) throw new Error("Ошибка запроса");
 

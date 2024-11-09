@@ -175,29 +175,54 @@ def solve(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            oeis_id = data.get('oeis_id')
-            params = [int(value) for key, value in data.items() if key.startswith('param')]
-
-            news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
+           
+            alg_id = data.get('alg_id')
+            params = data.get('params')
+            print(params)
+          
+          
+            news = sequence_tb.objects.filter(Alg_ID = alg_id)
+            
             if news:
                 m_id = news[0].M_ID
                 modele = sequence_tb.objects.filter(M_ID=m_id)
-                result_code = modele[0].Alg_ID.algorithm_code
+
+                result = modele[0].Alg_ID.alg_code
+
                 number_of_params = modele[0].Alg_ID.number_of_parameters
-
-                result = {}
-                exec(result_code, globals(), result)  # Выполняем код алгоритма
-                algo = result['Start']
-
+ 
                 if number_of_params == 1:
-                    res = algo(params[0])
+                    # res = result.Start(n)
+                    n = params.get('param1')
+                    exec(result, globals())
+                    # res = result.Start(n)
                 elif number_of_params == 2:
-                    res = algo(params[0], params[1])
+                    # res = result.Start(n,k)
+                    # n = params.get('param1')
+                    # k = params.get('param2')
+                    # print(n,k)
+                    # exec(f"n = {n} \nk={k}\n"+result)  # Выполняем код алгоритма
+                    # print('не гавно')
+                    # print(res)
+                    # res = result.Start(n,k)
+                    n = params.get('param1')
+                    k = params.get('param2')
+                    print(n,k)
+                    exec(result)  # Выполняем код алгоритма
+                    
+                    print('не гавно')
+                    
+
                 elif number_of_params == 3:
-                    res = algo(params[0], params[1], params[2])
-
-                return JsonResponse({'output': res})
-
+                    # res = result.Start(params[0], params[1], params[2])
+                    n= params.get('param1')
+                    k= params.get('param2')
+                    m = params.get('param3')
+                    exec(result, globals())  # Выполняем код алгоритма
+                    # res = result.Start(n,k,m)
+                return JsonResponse({'output': 'йоу'})
+            else: 
+                print('гавно')
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     else:
