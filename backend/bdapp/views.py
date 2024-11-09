@@ -62,10 +62,7 @@ def search_InterpSelect(request):
                 interpretation_instance = record.Interp_ID
                 list_interp.append({
                     'id': interpretation_instance.Interp_ID,  # ID интерпретации
-                    'n_value': interpretation_instance.n_value,  # Описание
                     'desc': interpretation_instance.description,  # Описание
-                    'example_table': interpretation_instance.example_text,
-                    'example_text': interpretation_instance.example_table,  # Описание
                 })
             return JsonResponse(list_interp, safe=False)
         else:
@@ -91,15 +88,7 @@ def alg_TableTitle(request): #Получить списком то какие п
         raise AlgIsNotFoundException(alg_name=alg_name)
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
-    # if alg_name:
-    #     news = algorithm.objects.filter(alg_name=alg_name)
-    #     if news:
-    #         response=HttpResponse(news[0].alg_table_title.split(","))
-    #         return response
-    #     else:
-    #         return HttpResponse('Error: Alg not found')
-    # else:
-    #     return HttpResponse('Error')
+
 
 def alg_Select(request):
     interp_id = request.GET.get('interp_id')  # Получаем ID интерпретации из запроса
@@ -117,12 +106,6 @@ def alg_Select(request):
             {
                 'id': alg.Alg_ID,
                 'name': alg.alg_name,
-                'table_title': alg.alg_table_title,
-                'number_of_parameters': alg.number_of_parameters,
-                'parameters_name': alg.parameters_name,
-                'description': alg.description,
-                'field1_text': alg.field1_text,
-                'field2_text': alg.field2_text,
             }
             for alg in algorithms
         ]
@@ -131,7 +114,37 @@ def alg_Select(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+def alg_SelectDetails(request):
+    algName = request.GET.get('algName')  # Получаем ID интерпретации из запроса
+    if not algName:
+        return JsonResponse({"error": "В селекторе ничего не заполнено"}, status=400)
     
+    try:
+        news = algorithm.objects.filter(alg_name=algName)  # Фильтруем по description
+        algorithms_list = [
+            {
+                'id': alg.Alg_ID,
+                'name': alg.alg_name,
+                'number_of_parameters': alg.number_of_parameters,
+                'name_param': alg.parameters_name,
+                'field1': alg.field1_name,
+                'field1_d': alg.field1_desc,
+                'field2': alg.field2_name,
+                'field2_d': alg.field2_desc,
+                'field3': alg.field3_name,
+                'field3_d': alg.tree_structure_process.url,
+                'field4': alg.field4_name,
+                'field4_d': alg.field4_desc,
+                'field5': alg.field5_name,
+                'field5_d': alg.field5_desc,
+                'alg_code ': alg.alg_code,
+            }
+            for alg in news
+        ]
+
+        return JsonResponse(algorithms_list, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)   
 
 def interp_Select(request):  # Получить интерпретацию по description
     try:
@@ -158,34 +171,38 @@ def interp_Select(request):  # Получить интерпретацию по 
         return HttpResponseBadRequest(content=exception.message)
 
 
-def solve(request): 
-    try:
-        oeis_id = request.GET.get('oeis_id')
-        news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
-        if news:
-            m_id = news[0].M_ID
-            modele= sequence_tb.objects.filter(M_ID=m_id)
-            result=modele[0].Alg_ID.algorithm_code
-            number_of_params = modele[0].Alg_ID.number_of_parameters
-            n = 5 #Сюда вбить параметры с формы, смотря сколько их
-            k = 3  
-            m= 4
-            result=exec(result, globals())
-            if number_of_params == 1:
-                res = result.Start(n)
-               
-            if number_of_params == 2:
-                res = result.Start(n,k)
-            
-            if number_of_params == 3:
-                res = result.Start(n,k,m)
-            
-            response = HttpResponse(res)
-            return response
-        else:
-            raise OEIS_IDNotFoundException(oeis_id=oeis_id)
-    except ApplicationException as exception:
-        return HttpResponseBadRequest(content=exception.message)
+def solve(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            oeis_id = data.get('oeis_id')
+            params = [int(value) for key, value in data.items() if key.startswith('param')]
+
+            news = sequence_desc.objects.filter(OEIS_ID=oeis_id)
+            if news:
+                m_id = news[0].M_ID
+                modele = sequence_tb.objects.filter(M_ID=m_id)
+                result_code = modele[0].Alg_ID.algorithm_code
+                number_of_params = modele[0].Alg_ID.number_of_parameters
+
+                result = {}
+                exec(result_code, globals(), result)  # Выполняем код алгоритма
+                algo = result['Start']
+
+                if number_of_params == 1:
+                    res = algo(params[0])
+                elif number_of_params == 2:
+                    res = algo(params[0], params[1])
+                elif number_of_params == 3:
+                    res = algo(params[0], params[1], params[2])
+
+                return JsonResponse({'output': res})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
     
 def main_view(request):
     return render(request, 'main.html')

@@ -13,6 +13,7 @@ urlpatterns = [
     path('alg_test',views. alg_TableTitle),
     path('interp',views.interp_Select),
     path('alg',views.alg_Select),
+    path('algDetails',views.alg_SelectDetails),
     
      path('main', views.main_view, name='main')
 ]

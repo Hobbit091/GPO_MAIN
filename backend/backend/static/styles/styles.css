@@ -431,6 +431,8 @@ body {
   gap: 15px;
   width: 100%;
   margin-bottom: 40px;
+  justify-content: space-around;
+  align-items: center;
 }
 .func-block__left-select {
   max-width: 500px;
@@ -451,6 +453,8 @@ body {
       -ms-flex-direction: row;
           flex-direction: row;
   margin-bottom: 15px;
+  justify-content: space-between;
+  gap: 15px;
 }
 .func-block__left-param-input {
   width: 40px;

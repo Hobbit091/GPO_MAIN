@@ -37,17 +37,26 @@ class interpretation(models.Model):
 
 class algorithm(models.Model):
     Alg_ID = models.AutoField(primary_key=True)
-    alg_table_title = models.CharField(default="Описание алгоритма, Формула мощности, Структура дерева И/ИЛИ, Псевдокод алгоритма, Источник иформации")
-    number_of_parameters = models.IntegerField()
-    parameters_name = models.TextField()
-    alg_name = models.TextField()
-    description = models.TextField()
-    field1_text = models.TextField(blank=True, null=True)
-    field2_text = models.TextField(blank=True, null=True)
+    alg_name = models.TextField(blank=False, null=False)
+    parameters_name = models.TextField(blank=False, null=False,default="N")
+    number_of_parameters = models.IntegerField(blank=False, null=False)
+    field1_name=models.TextField(default="")
+    field1_desc=models.TextField(default="")
+    field2_name=models.TextField(default="")
+    field2_desc=models.TextField(default="")
+    field3_name=models.TextField(default="")
     tree_structure = models.ImageField(upload_to='images/',blank=True, null=True)
-    pseudocode = models.TextField(blank=True, null=True)
-    algorithm_code = models.TextField(blank=True, null=True)
-    href_code = models.TextField(blank=True, null=True)
+    tree_structure_process = ImageSpecField(source='tree_structure',
+                                      processors=[ResizeToFill(600, 600)],
+                                      #format='JPEG',
+                                      options={'quality': 60})
+    field4_name=models.TextField(default="")
+    field4_desc=models.TextField(default="")
+    field5_name=models.TextField(default="")
+    field5_desc=models.TextField(default="")
+    alg_code = models.TextField(blank=False, null=False)
+   
+
 
      
     def __str__(self):

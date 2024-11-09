@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (oeisId) {
       loadInterpretations(oeisId);
       loadSequence(oeisId);
+      loadAlgorithmsByInterpretation();
     }
 });
 
@@ -121,6 +122,7 @@ async function loadAlgorithmsByInterpretation(Interp_ID) {
         option.value = alg.id; // ID алгоритма
         selector_alg.appendChild(option);
       });
+      loadAlgorithm_details()
     } else {
       console.error('Ошибка при загрузке алгоритмов');
     }
@@ -129,3 +131,101 @@ async function loadAlgorithmsByInterpretation(Interp_ID) {
   }
 }
 
+
+const selectorAlg = document.querySelector('.func-block__left-select');
+
+async function loadAlgorithm_details() {
+  
+  const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
+
+  try {
+    const response = await fetch(`/algDetails?algName=${algName}`);
+    if (response.ok) {
+      const algData = await response.json();
+      const infoWrapper = document.querySelector('.func-block__right'); // Находим основной контейнер
+      infoWrapper.innerHTML = ''; 
+
+      infoWrapper.innerHTML = `
+       <div class="func-block__right">
+        <div class="func-block__right-name">${algData[0].field1}</div>
+        <div class="func-block__right-desc">${algData[0].field1_d}</div>
+
+        <div class="func-block__right-name">${algData[0].field2}</div>
+        <div class="func-block__right-desc">${algData[0].field2_d}</div>
+
+        <div class="func-block__right-name">${algData[0].field3}</div>
+        <img style="margin: auto; display: block;"src="${algData[0].field3_d}"/>
+
+        <div class="func-block__right-name">${algData[0].field4}</div>
+        <div class="func-block__right-desc">${algData[0].field4_d}</div>
+
+        <div class="func-block__right-name">${algData[0].field5}</div>
+        <div class="func-block__right-desc">${algData[0].field5_d}</div>
+
+      </div>
+    `;
+
+    const infoWrapper2 = document.querySelector('.func-block__left-param'); // Находим основной контейнер
+    const infoWrapper3 = document.querySelector('.func-block__left-functional'); // Находим основной контейнер
+    infoWrapper2.innerHTML = ''; 
+    infoWrapper3.innerHTML = ''; 
+    console.log('121', algData[0].name_param);
+    const titles = algData[0].name_param.split(',');
+    
+    titles.forEach((title) => {
+      const titleTrimmed = title.trim();
+  
+      const titleDiv = document.createElement('div');
+      titleDiv.textContent = titleTrimmed + "=";
+      
+      const input = document.createElement('input');
+      input.classList.add('func-block__left-param-input');
+      
+      titleDiv.append(input)
+      infoWrapper2.appendChild(titleDiv);
+    });
+    infoWrapper3.appendChild(infoWrapper2)
+
+   
+    } else {
+      console.error('Ошибка при загрузке последовательности');
+    }
+   
+  } catch (error) {
+    console.error('Произошла ошибка:', error);
+  }
+}
+
+selectorAlg.addEventListener('change', function(event) {
+  loadAlgorithm_details();
+});
+
+async function solve() {
+  const inputs = document.querySelectorAll(".func-block__left-param-input"); // Находим все динамические input
+  const params = {};
+
+  inputs.forEach((input, index) => {
+      params[`param${index + 1}`] = input.value; // Собираем значения в объект
+  });
+
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+  console.log("Параметры",params)
+  try {
+      const response = await fetch('/solve', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken  // Добавляем CSRF-токен в заголовок
+          },
+          body: JSON.stringify(params),
+      });
+
+      if (!response.ok) throw new Error("Ошибка запроса");
+
+      const result = await response.json();
+      document.getElementById("func-block__left-main_textarea").textContent = result.output; // Выводим результат
+  } catch (error) {
+      console.error("Произошла ошибка:", error);
+      document.getElementById("func-block__left-main_textarea").textContent = "Ошибка вычислений";
+  }
+};
