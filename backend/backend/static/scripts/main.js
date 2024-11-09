@@ -88,6 +88,7 @@ async function loadInterpretations_details() {
             <div style="display:none" class="for_interp_id">${interpData[0].id}</div>
             <div>${interpData[0].example_text}</div>
             <div>${interpData[0].example_table}</div>
+            <img src="${interpData[0].example_image}" />
           `;
       } else {
         console.error('Ошибка при загрузке последовательности');

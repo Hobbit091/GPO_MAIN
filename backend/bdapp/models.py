@@ -27,8 +27,8 @@ class interpretation(models.Model):
     example_image = models.ImageField(upload_to='images/', blank=True, null=True)
     example_table = models.TextField(blank=True, null=True)
     example_image_process = ImageSpecField(source='example_image',
-                                      processors=[ResizeToFill(100, 50)],
-                                      format='JPEG',
+                                      #processors=[ResizeToFill(100, 50)],
+                                      #format='JPEG',
                                       options={'quality': 60})
      
     def __str__(self):

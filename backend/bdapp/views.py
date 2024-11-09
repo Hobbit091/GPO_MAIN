@@ -64,8 +64,8 @@ def search_InterpSelect(request):
                     'id': interpretation_instance.Interp_ID,  # ID интерпретации
                     'n_value': interpretation_instance.n_value,  # Описание
                     'desc': interpretation_instance.description,  # Описание
-                    'example_table': interpretation_instance.example_table,
-                    'example_text': interpretation_instance.example_text,  # Описание
+                    'example_table': interpretation_instance.example_text,
+                    'example_text': interpretation_instance.example_table,  # Описание
                 })
             return JsonResponse(list_interp, safe=False)
         else:
@@ -146,7 +146,8 @@ def interp_Select(request):  # Получить интерпретацию по 
                     'n_value': interp.n_value,
                     'description': interp.description,
                     'example_text': interp.example_text,
-                    # Добавьте другие поля, которые хотите вернуть
+                    'example_table': interp.example_table,  # Описание
+                    'example_image': interp.example_image_process.url,
                 }
                 for interp in news
             ]
@@ -155,14 +156,7 @@ def interp_Select(request):  # Получить интерпретацию по 
             raise Interpritation_Selector_IDNotFoundException(interpritation_id="")
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
-    # if interp_id:
-    #     news = interpretation.objects.filter(Interp_ID=interp_id)
-    #     if news:
-    #         return HttpResponse(news)
-    #     else:
-    #         return HttpResponse('Error: Interpretation not found')
-    # else:
-    #     return HttpResponse('Error')
+
 
 def solve(request): 
     try:
