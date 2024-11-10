@@ -230,7 +230,7 @@ async function solve() {
       if (!response.ok) throw new Error("Ошибка запроса");
 
       const result = await response.json();
-      document.getElementById("func-block__left-main_textarea").textContent = result.output; // Выводим результат
+      document.getElementById("func-block__left-main_textarea").textContent = result; // Выводим результат
   } catch (error) {
       console.error("Произошла ошибка:", error);
       document.getElementById("func-block__left-main_textarea").textContent = "Ошибка вычислений";

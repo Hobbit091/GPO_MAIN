@@ -190,37 +190,26 @@ def solve(request):
                 result = modele[0].Alg_ID.alg_code
 
                 number_of_params = modele[0].Alg_ID.number_of_parameters
- 
+                n=0
+                k=0
+                m=0
+                res=None
+
+                exec(result, globals())
+
                 if number_of_params == 1:
-                    # res = result.Start(n)
                     n = params.get('param1')
-                    exec(result, globals())
-                    # res = result.Start(n)
+                    res = Start(n)
                 elif number_of_params == 2:
-                    # res = result.Start(n,k)
-                    # n = params.get('param1')
-                    # k = params.get('param2')
-                    # print(n,k)
-                    # exec(f"n = {n} \nk={k}\n"+result)  # Выполняем код алгоритма
-                    # print('не гавно')
-                    # print(res)
-                    # res = result.Start(n,k)
+                    n = int(params.get('param1'))
+                    k = int(params.get('param2'))
+                    res = Start(n, k)
+                elif number_of_params == 3:
                     n = params.get('param1')
                     k = params.get('param2')
-                    print(n,k)
-                    exec(result)  # Выполняем код алгоритма
-                    
-                    print('не гавно')
-                    
-
-                elif number_of_params == 3:
-                    # res = result.Start(params[0], params[1], params[2])
-                    n= params.get('param1')
-                    k= params.get('param2')
                     m = params.get('param3')
-                    exec(result, globals())  # Выполняем код алгоритма
-                    # res = result.Start(n,k,m)
-                return JsonResponse({'output': 'йоу'})
+                    res = Start(n, k, m)
+                return JsonResponse(res, safe=False)
             else: 
                 print('гавно')
         except Exception as e:
