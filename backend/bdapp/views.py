@@ -211,7 +211,7 @@ def solve(request):
                     res = Start(n, k, m)
                 return JsonResponse(res, safe=False)
             else: 
-                print('гавно')
+                print('нет')
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     else:
