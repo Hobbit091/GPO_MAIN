@@ -1,10 +1,4 @@
 
-function switchLanguage(language) {
-    document.getElementById('ru').classList.remove('active');
-    document.getElementById('en').classList.remove('active');
-    document.getElementById(language).classList.add('active');
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     const oeisId = document.querySelector('.main__header-name').textContent.trim();
     

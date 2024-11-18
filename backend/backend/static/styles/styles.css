@@ -181,44 +181,6 @@ body {
           justify-content: center;
   gap: 25px;
 }
-.switcher__wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-item-align: end;
-      align-self: flex-end;
-  margin-top: 40px;
-  margin-right: 50px;
-}
-.switcher-language {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  border: 2px solid #3B388D;
-  border-radius: 25px;
-  overflow: hidden;
-  width: 100px;
-  cursor: pointer;
-}
-.switcher-option {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  text-align: center;
-  padding: 10px 0;
-  font-family: 'Lora', 'Regular', sans-serif;
-  font-size: 14px;
-  color: #3B388D;
-  -webkit-transition: background-color 0.3s, color 0.3s;
-  transition: background-color 0.3s, color 0.3s;
-}
-.switcher-option.active {
-  background-color: #3B388D;
-  color: white;
-}
-.switcher-option :not(.active) {
-  background-color: white;
-}
 .main__header {
   top: 0;
   left: 0;
