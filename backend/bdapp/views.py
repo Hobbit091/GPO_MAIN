@@ -73,12 +73,10 @@ def search_InterpSelect(request):
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
-
 def search_SeqSelect(request): #Получить список последовательностей объектом, дальше параметрами можно вытягивать все что угодно 
-    news=[]
-    news = sequence_desc.objects.all()
-    response = HttpResponse(news)
-    return response
+    data = list(sequence_desc.objects.values('OEIS_ID'))  
+    return JsonResponse(data, safe=False)
+
 
 def alg_TableTitle(request): #Получить списком то какие поля будут у таблицы
     try:

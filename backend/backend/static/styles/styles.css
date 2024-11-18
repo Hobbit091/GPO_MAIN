@@ -171,16 +171,7 @@ body {
   text-align: center;
   color: #3B388D;
 }
-.home__about {
-  margin-top: 120px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 25px;
-}
+
 .main__header {
   top: 0;
   left: 0;

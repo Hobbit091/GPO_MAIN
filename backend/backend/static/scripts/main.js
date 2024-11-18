@@ -1,3 +1,43 @@
+document.addEventListener('DOMContentLoaded', loadSequenceList);
+
+
+document.getElementById('find').addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); 
+    executeSearchQuery();
+  }
+});
+
+async function loadSequenceList() {
+  try {
+    const response = await fetch(`/search_seq`);
+    if (response.ok) {
+      const sequenceData = await response.json(); 
+      const infoWrapper = document.querySelector('.home__find-href'); 
+      infoWrapper.innerHTML = ''; 
+
+      // Проверяем структуру данных
+      console.log('Полученные данные:', sequenceData);
+
+      sequenceData.slice(0, 4).forEach((seq) => {
+        const a = document.createElement('a');
+        a.classList.add('home__find-href-content');
+        a.href = `/main?find=${seq.OEIS_ID}`;
+        a.textContent = seq.OEIS_ID;
+        infoWrapper.appendChild(a);
+    });
+    
+    } else {
+      console.error('Ошибка при загрузке последовательности: ', response.status);
+    }
+  } catch (error) {
+    console.error('Произошла ошибка:', error);
+  }
+}
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const oeisId = document.querySelector('.main__header-name').textContent.trim();
@@ -109,7 +149,7 @@ async function loadAlgorithmsByInterpretation(Interp_ID) {
       const algorithms = await response.json();
       const selector_alg = document.querySelector('.func-block__left-select');
       selector_alg.innerHTML = ''; // Очищаем текущие опции
-
+      
       algorithms.forEach((alg) => {
         const option = document.createElement('option');
         option.textContent = alg.name; // Название алгоритма
@@ -179,7 +219,6 @@ async function loadAlgorithm_details() {
       infoWrapper2.appendChild(titleDiv);
     });
     infoWrapper3.appendChild(infoWrapper2)
-
    
     } else {
       console.error('Ошибка при загрузке последовательности');
