@@ -198,9 +198,13 @@ async function loadAlgorithm_details() {
 
 selectorAlg.addEventListener('change', function(event) {
   loadAlgorithm_details();
+  const textArea = document.querySelector('.func-block__left-main_textarea');
+  textArea.innerHTML = '';
 });
 
 async function solve() {
+  const textArea = document.querySelector('.func-block__left-main_textarea');
+  textArea.innerHTML = '';
   const inputs = document.querySelectorAll(".func-block__left-param-input"); // Находим все динамические input
   const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
   const response = await fetch(`/algDetails?algName=${algName}`);

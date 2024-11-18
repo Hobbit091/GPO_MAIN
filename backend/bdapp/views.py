@@ -7,6 +7,7 @@ import psycopg2
 import json
 
 from bdapp.exceptions.ALG import AlgIsNotFoundException
+from bdapp.exceptions.SolveException import SolveException
 from bdapp.exceptions.Interpritation_Selector_ID import Interpritation_Selector_IDNotFoundException
 from bdapp.exceptions.OEISID import OEIS_IDNotFoundException
 from bdapp.exceptions.base import ApplicationException
@@ -15,6 +16,8 @@ from bdapp.models import interpretation
 from bdapp.models import sequence_tb 
 from bdapp.models import algorithm
 from django.http import HttpResponseBadRequest
+from threading import Timer
+import asyncio
 
 
 def show(request): #Заглушка, чтобы загружать стартову страницу
@@ -22,7 +25,6 @@ def show(request): #Заглушка, чтобы загружать старто
     context = {}
     rendered_page = template.render(context, request)
     return HttpResponse(rendered_page)
-
 
 
 def search_sequence(request): 
@@ -171,52 +173,127 @@ def interp_Select(request):  # Получить интерпретацию по 
         return HttpResponseBadRequest(content=exception.message)
 
 
-def solve(request):
+async def solve(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-           
             alg_id = data.get('alg_id')
             params = data.get('params')
             print(params)
-          
-          
-            news = sequence_tb.objects.filter(Alg_ID = alg_id)
-            
+
+            # Асинхронная выборка из базы данных
+            news = await algorithm.objects.filter(Alg_ID=alg_id).afirst()
             if news:
-                m_id = news[0].M_ID
-                modele = sequence_tb.objects.filter(M_ID=m_id)
+                result = news.alg_code
+                number_of_params = news.number_of_parameters
 
-                result = modele[0].Alg_ID.alg_code
+                n, k, m = 0, 0, 0
+                res = None
+                loop = asyncio.get_event_loop()
+                # Таймер для выполнения основного блока
+                async def execute_with_timeout():
+                    
+                    local_scope = {}
 
-                number_of_params = modele[0].Alg_ID.number_of_parameters
-                n=0
-                k=0
-                m=0
-                res=None
+                    # Функция для выполнения exec
+                    def execute_code():
+                        exec(result, globals(), local_scope)
 
-                exec(result, globals())
+                    # Выполнение exec
+                    await loop.run_in_executor(None, execute_code)
 
-                if number_of_params == 1:
-                    n = params.get('param1')
-                    res = Start(n)
-                elif number_of_params == 2:
-                    n = int(params.get('param1'))
-                    k = int(params.get('param2'))
-                    res = Start(n, k)
-                elif number_of_params == 3:
-                    n = params.get('param1')
-                    k = params.get('param2')
-                    m = params.get('param3')
-                    res = Start(n, k, m)
+                    # Получаем функцию Start из локальной области
+                    Start = local_scope.get("Start")
+                    if not Start:
+                        raise ValueError("Функция Start не найдена в предоставленном коде")
+
+                    # В зависимости от количества параметров вызываем Start
+                    if number_of_params == 1:
+                        n = int(params.get('param1'))
+                        return await loop.run_in_executor(None, Start, n)
+                    elif number_of_params == 2:
+                        n = int(params.get('param1'))
+                        k = int(params.get('param2'))
+                        return await loop.run_in_executor(None, Start, n, k)
+                    elif number_of_params == 3:
+                        n = int(params.get('param1'))
+                        k = int(params.get('param2'))
+                        m = int(params.get('param3'))
+                        return await loop.run_in_executor(None, Start, n, k, m)
+                    elif number_of_params == 4:
+                        n = int(params.get('param1'))
+                        k = params.get('param2')
+                        m = int(params.get('param3'))
+                        combObject = params.get('param4')
+                        return await loop.run_in_executor(None, Start, n, k, m, combObject)
+                # Запускаем основной код с таймером
+                try:
+                    print(loop.is_running())
+                    res = await asyncio.wait_for(execute_with_timeout(), timeout=20)
+                except asyncio.TimeoutError:
+                    res = 'Превышено время ожидания'
+                    return JsonResponse(res, safe=False)
+                
+                print(loop.is_running())
                 return JsonResponse(res, safe=False)
-            else: 
-                print('нет')
+            else:
+                res = 'Код не найден'
+                return JsonResponse(res, safe=False)
+        except TimeoutError as te:
+            print(str(te))
+            return JsonResponse({'error': str(te)}, status=408)
         except Exception as e:
+            print(str(e))
             return JsonResponse({'error': str(e)}, status=400)
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
+# def solve(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+
+#             alg_id = data.get('alg_id')
+#             params = data.get('params')
+#             print(params)
+          
+#             news = algorithm.objects.filter(Alg_ID = alg_id)
+#             if news: 
+#                 result = news[0].alg_code
+#                 number_of_params = news[0].number_of_parameters
+#                 n=0
+#                 k=0
+#                 m=0
+#                 res=None
+#                 exec(result, globals())
+#                 print(number_of_params)
+#                 if number_of_params == 1:
+#                     n = int(params.get('param1'))
+#                     res = Start(n)
+#                 elif number_of_params == 2:
+#                     n = int(params.get('param1'))
+#                     k = int(params.get('param2'))
+#                     res = Start(n, k)
+#                 elif number_of_params == 3:
+#                     n = int(params.get('param1'))
+#                     k = int(params.get('param2'))
+#                     m = int(params.get('param3'))
+#                     res = Start(n, k, m)
+#                 elif number_of_params == 4:
+#                     n = int(params.get('param1'))
+#                     k = (params.get('param2'))
+#                     m = int(params.get('param3'))
+#                     combObject = params.get('param4')
+#                     res = Start(n, k, m, combObject)
+#                 return JsonResponse(res, safe=False)
+#             else: 
+#                 res = 'Код не найден'
+#                 return JsonResponse(res, safe=False)
+#         except Exception as e:
+#             print(str(e))
+#             return JsonResponse({'error': str(e)}, status=400)
+#     else:
+#         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
     
 def main_view(request):
     return render(request, 'main.html')
