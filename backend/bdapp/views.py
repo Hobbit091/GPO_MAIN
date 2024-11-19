@@ -179,7 +179,6 @@ async def solve(request):
             params = data.get('params')
             print(params)
 
-            # Асинхронная выборка из базы данных
             news = await algorithm.objects.filter(Alg_ID=alg_id).afirst()
             if news:
                 result = news.alg_code
@@ -187,25 +186,20 @@ async def solve(request):
 
                 n, k, m = 0, 0, 0
                 res = None
-                loop = asyncio.get_event_loop()
-                # Таймер для выполнения основного блока
+
                 async def execute_with_timeout():
-                    
+                    loop = asyncio.get_event_loop()
                     local_scope = {}
 
-                    # Функция для выполнения exec
                     def execute_code():
                         exec(result, globals(), local_scope)
 
-                    # Выполнение exec
                     await loop.run_in_executor(None, execute_code)
 
-                    # Получаем функцию Start из локальной области
                     Start = local_scope.get("Start")
                     if not Start:
                         raise ValueError("Функция Start не найдена в предоставленном коде")
 
-                    # В зависимости от количества параметров вызываем Start
                     if number_of_params == 1:
                         n = int(params.get('param1'))
                         return await loop.run_in_executor(None, Start, n)
@@ -224,15 +218,13 @@ async def solve(request):
                         m = int(params.get('param3'))
                         combObject = params.get('param4')
                         return await loop.run_in_executor(None, Start, n, k, m, combObject)
-                # Запускаем основной код с таймером
+                    
                 try:
-                    print(loop.is_running())
                     res = await asyncio.wait_for(execute_with_timeout(), timeout=20)
                 except asyncio.TimeoutError:
                     res = 'Превышено время ожидания'
                     return JsonResponse(res, safe=False)
                 
-                print(loop.is_running())
                 return JsonResponse(res, safe=False)
             else:
                 res = 'Код не найден'
