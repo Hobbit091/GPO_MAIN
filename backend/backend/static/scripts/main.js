@@ -199,26 +199,50 @@ async function loadAlgorithm_details() {
 
       </div>
     `;
-    const infoWrapper2 = document.querySelector('.func-block__left-param'); // Находим основной контейнер
-    const infoWrapper3 = document.querySelector('.func-block__left-functional'); // Находим основной контейнер
-    infoWrapper2.innerHTML = ''; 
-    infoWrapper3.innerHTML = ''; 
-    console.log('121', algData[0].name_param);
-    const titles = algData[0].name_param.split(',');
-    
-    titles.forEach((title) => {
-      const titleTrimmed = title.trim();
-  
-      const titleDiv = document.createElement('div');
-      titleDiv.textContent = titleTrimmed + "=";
-      
-      const input = document.createElement('input');
-      input.classList.add('func-block__left-param-input');
-      
-      titleDiv.append(input)
-      infoWrapper2.appendChild(titleDiv);
-    });
-    infoWrapper3.appendChild(infoWrapper2)
+    const infoWrapper2 = document.querySelector('.func-block__left-param'); // Контейнер для параметров
+const infoWrapper3 = document.querySelector('.func-block__left-functional'); // Функциональный контейнер
+
+// Очищаем контейнеры
+infoWrapper2.innerHTML = '';
+infoWrapper3.innerHTML = '';
+
+
+// Разбиваем параметры на отдельные элементы
+const titles = algData[0].name_param.split(',');
+
+// Генерация элементов
+titles.forEach((title) => {
+  const titleTrimmed = title.trim();
+
+  if (titleTrimmed !== 'Комбинаторный объект') {
+    // Создаем div для параметра
+    const titleDiv = document.createElement('div');
+    titleDiv.textContent = titleTrimmed + "=";
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('func-block__left-param-input');
+
+    titleDiv.appendChild(input);
+    infoWrapper2.appendChild(titleDiv); // Добавляем в контейнер параметров
+  } else {
+    // Создаем объект для "Комбинаторного объекта"
+    const objectDiv = document.createElement('div');
+    objectDiv.classList.add('func-block__left-object');
+    objectDiv.textContent = titleTrimmed;
+
+    infoWrapper3.appendChild(objectDiv); // Добавляем в функциональный блок
+
+    const objectInput = document.createElement('input');
+    objectInput.type = 'text';
+    objectInput.classList.add('func-block__left-param-input', 'func-block__left-param-input--wd500');
+
+    infoWrapper3.appendChild(objectInput); // Добавляем input для объекта
+  }
+});
+
+// Вставляем infoWrapper2 в infoWrapper3 перед блоком "Комбинаторный объект"
+infoWrapper3.insertBefore(infoWrapper2, infoWrapper3.querySelector('.func-block__left-object'));
    
     } else {
       console.error('Ошибка при загрузке последовательности');
