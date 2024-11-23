@@ -317,8 +317,9 @@ async def execute_with_timeout(code, params, number_of_params):
         n = int(params.get('param1')) if params.get('param1') else None
         k = int(params.get('param2')) if params.get('param2') else None
         m = int(params.get('param3')) if params.get('param3') else None
-        combObject = params.get('combObject')
-        combObject = [int(x) for x in combObject.split()]
+        combObject = params.get('combObject') if params.get('combObject') else None
+        if combObject:
+            combObject = [int(x) for x in combObject.split()]
         if number_of_params == 1:
             result = await asyncio.to_thread(globals_dict['Start'], n)
         elif number_of_params == 2:
