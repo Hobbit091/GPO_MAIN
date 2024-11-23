@@ -415,6 +415,12 @@ body {
   background-color: #cfcde8;
   border-style: solid;
   border-radius: 5px;
+}.func-block__left-param-input1 {
+  width: 40px;
+  height: 20px;
+  background-color: #cfcde8;
+  border-style: solid;
+  border-radius: 5px;
 }
 .func-block__left-param-input--wd500 {
   width: 100%;

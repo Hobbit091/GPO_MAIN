@@ -235,7 +235,7 @@ titles.forEach((title) => {
 
     const objectInput = document.createElement('input');
     objectInput.type = 'text';
-    objectInput.classList.add('func-block__left-param-input', 'func-block__left-param-input--wd500');
+    objectInput.classList.add('func-block__left-param-input1', 'func-block__left-param-input--wd500');
 
     infoWrapper3.appendChild(objectInput); // Добавляем input для объекта
   }
@@ -263,6 +263,8 @@ async function solve() {
   const textArea = document.querySelector('.func-block__left-main_textarea');
   textArea.innerHTML = '';
   const inputs = document.querySelectorAll(".func-block__left-param-input"); // Находим все динамические input
+  const inputCombObject = document.querySelectorAll(".func-block__left-param-input1");
+  console.log(inputCombObject);
   const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
   const response = await fetch(`/algDetails?algName=${algName}`);
   const algData = await response.json();
@@ -272,7 +274,12 @@ async function solve() {
   inputs.forEach((input, index) => {
       params[`param${index + 1}`] = input.value; // Собираем значения в объект
   });
-
+  if(inputCombObject != null){
+    inputCombObject.forEach((input,index) =>{
+      params['combObject'] = input.value;
+  });
+  };
+  console.log(params['combObject']);
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
   console.log("Параметры",params)
   try {

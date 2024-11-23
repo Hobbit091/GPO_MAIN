@@ -237,29 +237,104 @@ def interp_Select(request):  # Получить интерпретацию по 
 #     else:
 #         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
-from functools import wraps
-import errno
-import os
-from threading import Timer
+# from functools import wraps
+# import errno
+# import os
+# from threading import Timer
 
-def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
-    def decorator(func):
-        @wraps(func)
-        def _handle_timeout(*args, **kwargs):
-            def _raise_timeout():
-                raise TimeoutError
-            timer = Timer(seconds, _raise_timeout)
-            timer.start()
-            try:
-                result = func(*args, **kwargs)
-            finally:
-                timer.cancel()
-            return result
-        return _handle_timeout
-    return decorator
+# def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
+#     def decorator(func):
+#         @wraps(func)
+#         def _handle_timeout(*args, **kwargs):
+#             def _raise_timeout():
+#                 raise TimeoutError
+#             timer = Timer(seconds, _raise_timeout)
+#             timer.start()
+#             try:
+#                 result = func(*args, **kwargs)
+#             finally:
+#                 timer.cancel()
+#             return result
+#         return _handle_timeout
+#     return decorator
 
-@timeout(20)
-def solve(request):
+# @timeout(20)
+# def solve(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+
+#             alg_id = data.get('alg_id')
+#             params = data.get('params')
+
+          
+#             news = algorithm.objects.filter(Alg_ID = alg_id)
+#             if news: 
+#                 result = news[0].alg_code
+#                 number_of_params = news[0].number_of_parameters
+#                 n=0
+#                 k=0
+#                 m=0
+#                 res=None
+#                 exec(result, globals())
+#                 if number_of_params == 1:
+#                     n = int(params.get('param1'))
+#                     res = Start(n)
+#                 elif number_of_params == 2:
+#                     n = int(params.get('param1'))
+#                     k = int(params.get('param2'))
+#                     res = Start(n, k)
+#                 elif number_of_params == 3:
+#                     n = int(params.get('param1'))
+#                     k = int(params.get('param2'))
+#                     m = int(params.get('param3'))
+#                     res = Start(n, k, m)
+#                 elif number_of_params == 4:
+#                     n = int(params.get('param1'))
+#                     k = (params.get('param2'))
+#                     m = int(params.get('param3'))
+#                     combObject = params.get('param4')
+#                     res = Start(n, k, m, combObject)
+#                 return JsonResponse(res, safe=False)
+#             else: 
+#                 res = 'Код не найден'
+#                 return JsonResponse(res, safe=False)
+#         except Exception as e:
+#             res = 'Превышено время ожидания вычисления, возможно, вы поставили слишком большие значения параметров'
+#             return JsonResponse(res, safe=False)
+#     else:
+#         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+import asyncio
+from django.http import JsonResponse
+from asgiref.sync import sync_to_async
+import json
+
+async def execute_with_timeout(code, params, number_of_params):
+    try:
+        globals_dict = globals()
+        exec(code, globals_dict)  
+
+        n = int(params.get('param1')) if params.get('param1') else None
+        k = int(params.get('param2')) if params.get('param2') else None
+        m = int(params.get('param3')) if params.get('param3') else None
+        combObject = params.get('combObject')
+        combObject = [int(x) for x in combObject.split()]
+        if number_of_params == 1:
+            result = await asyncio.to_thread(globals_dict['Start'], n)
+        elif number_of_params == 2:
+            result = await asyncio.to_thread(globals_dict['Start'], n, k)
+        elif number_of_params == 3:
+            result = await asyncio.to_thread(globals_dict['Start'], n, k, m)
+        elif number_of_params == 4:
+            result = await asyncio.to_thread(globals_dict['Start'], n, k, m, combObject)
+        else:
+            result = 'Некорректное количество параметров'
+        return result
+    except Exception as e:
+        return f"Ошибка выполнения: {str(e)}"
+
+
+async def solve(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -267,41 +342,29 @@ def solve(request):
             alg_id = data.get('alg_id')
             params = data.get('params')
 
-          
-            news = algorithm.objects.filter(Alg_ID = alg_id)
-            if news: 
-                result = news[0].alg_code
+            
+            news = await sync_to_async(list)(algorithm.objects.filter(Alg_ID=alg_id))
+            if news:
+                alg_code = news[0].alg_code
                 number_of_params = news[0].number_of_parameters
-                n=0
-                k=0
-                m=0
-                res=None
-                exec(result, globals())
-                if number_of_params == 1:
-                    n = int(params.get('param1'))
-                    res = Start(n)
-                elif number_of_params == 2:
-                    n = int(params.get('param1'))
-                    k = int(params.get('param2'))
-                    res = Start(n, k)
-                elif number_of_params == 3:
-                    n = int(params.get('param1'))
-                    k = int(params.get('param2'))
-                    m = int(params.get('param3'))
-                    res = Start(n, k, m)
-                elif number_of_params == 4:
-                    n = int(params.get('param1'))
-                    k = (params.get('param2'))
-                    m = int(params.get('param3'))
-                    combObject = params.get('param4')
-                    res = Start(n, k, m, combObject)
-                return JsonResponse(res, safe=False)
-            else: 
-                res = 'Код не найден'
-                return JsonResponse(res, safe=False)
+
+                try:
+                    result = await asyncio.wait_for(
+                        execute_with_timeout(alg_code, params, number_of_params),
+                        timeout=20
+                    )
+                    return JsonResponse(result, safe=False)
+                except asyncio.TimeoutError:
+                    return JsonResponse(
+                        'Превышено время ожидания вычисления. Попробуйте уменьшить параметры.',
+                        safe=False,
+                    )
+            else:
+                return JsonResponse('Код не найден', safe=False)
         except Exception as e:
-            res = 'Превышено время ожидания вычисления, возможно, вы поставили слишком большие значения параметров'
-            return JsonResponse(res, safe=False)
+            return JsonResponse(
+                f"Произошла ошибка: {str(e)}", safe=False, status=500
+            )
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
