@@ -422,6 +422,13 @@ body {
   border-style: solid;
   border-radius: 5px;
 }
+.func-block__left-param-input2 {
+  width: 40px;
+  height: 20px;
+  background-color: #cfcde8;
+  border-style: solid;
+  border-radius: 5px;
+}
 .func-block__left-param-input--wd500 {
   width: 100%;
   max-width: 500px;
@@ -454,7 +461,8 @@ body {
   background-color: gray;
 }
 .func-block__left-main_textarea {
-  max-width: 500px;
+  max-width: 900px;
+  text-align: center;
   width: 100%;
   min-height: 200px;
   resize: none;

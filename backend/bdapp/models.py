@@ -8,12 +8,9 @@ class sequence_desc(models.Model):
     special_title = models.TextField()
     number_of_parameters = models.IntegerField()
     recurrent_formula = models.TextField(blank=True, null=True)
-    explicit_formula = models.TextField(blank=True, null=True)
-    other_formula = models.TextField(blank=True, null=True)
     explicit_formula_latex = models.TextField(blank=True, null=True)
     other_formula_latex = models.TextField(blank=True, null=True)
     recurrent_formula_latex = models.TextField(blank=True, null=True)
-    generating_function = models.TextField(blank=True, null=True)
     generating_function_latex = models.TextField(blank=True, null=True)
     
     def __str__(self):
@@ -36,8 +33,19 @@ class interpretation(models.Model):
         return F"{self.Interp_ID}"
 
 class algorithm(models.Model):
+    ALG_TYPE_CHOICES = [
+        ('Listing', 'Listing'),
+        ('Rank', 'Rank'),
+        ('Unrank', 'Unrank'),
+    ]
+
     Alg_ID = models.AutoField(primary_key=True)
     alg_name = models.TextField(blank=False, null=False)
+    alg_type = models.CharField(
+        max_length=10,
+        choices=ALG_TYPE_CHOICES,
+        default='Listing'
+    )
     parameters_name = models.TextField(blank=False, null=False,default="N")
     number_of_parameters = models.IntegerField(blank=False, null=False)
     field1_name=models.TextField(default="")

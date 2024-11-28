@@ -209,38 +209,53 @@ infoWrapper3.innerHTML = '';
 
 // Разбиваем параметры на отдельные элементы
 const titles = algData[0].name_param.split(',');
-
+const algType = algData[0].alg_type;
+console.log(algType);
 // Генерация элементов
 titles.forEach((title) => {
   const titleTrimmed = title.trim();
 
-  if (titleTrimmed !== 'Комбинаторный объект') {
-    // Создаем div для параметра
-    const titleDiv = document.createElement('div');
-    titleDiv.textContent = titleTrimmed + "=";
+  
+  // Создаем div для параметра
+  const titleDiv = document.createElement('div');
+  titleDiv.textContent = titleTrimmed + "=";
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.classList.add('func-block__left-param-input');
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.classList.add('func-block__left-param-input');
 
-    titleDiv.appendChild(input);
-    infoWrapper2.appendChild(titleDiv); // Добавляем в контейнер параметров
-  } else {
+  titleDiv.appendChild(input);
+  infoWrapper2.appendChild(titleDiv); // Добавляем в контейнер параметров
+  
+});
+if(algType == 'Rank'){
     // Создаем объект для "Комбинаторного объекта"
     const objectDiv = document.createElement('div');
     objectDiv.classList.add('func-block__left-object');
-    objectDiv.textContent = titleTrimmed;
-
+    objectDiv.textContent = 'Комбинаторный объект';
+  
     infoWrapper3.appendChild(objectDiv); // Добавляем в функциональный блок
-
+  
     const objectInput = document.createElement('input');
     objectInput.type = 'text';
     objectInput.classList.add('func-block__left-param-input1', 'func-block__left-param-input--wd500');
-
+  
     infoWrapper3.appendChild(objectInput); // Добавляем input для объекта
-  }
-});
-
+}
+else if(algType == 'Unrank'){
+    // Создаем объект для "Комбинаторного объекта"
+    const objectDiv = document.createElement('div');
+    objectDiv.classList.add('func-block__left-object');
+    objectDiv.textContent = 'Ранг';
+  
+    infoWrapper3.appendChild(objectDiv); // Добавляем в функциональный блок
+  
+    const objectInput = document.createElement('input');
+    objectInput.type = 'number';
+    objectInput.classList.add('func-block__left-param-input2');
+  
+    infoWrapper3.appendChild(objectInput); // Добавляем input для объекта
+}
 // Вставляем infoWrapper2 в infoWrapper3 перед блоком "Комбинаторный объект"
 infoWrapper3.insertBefore(infoWrapper2, infoWrapper3.querySelector('.func-block__left-object'));
    
@@ -264,7 +279,7 @@ async function solve() {
   textArea.innerHTML = '';
   const inputs = document.querySelectorAll(".func-block__left-param-input"); // Находим все динамические input
   const inputCombObject = document.querySelectorAll(".func-block__left-param-input1");
-  console.log(inputCombObject);
+  const inputRank = document.querySelectorAll(".func-block__left-param-input2")
   const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
   const response = await fetch(`/algDetails?algName=${algName}`);
   const algData = await response.json();
@@ -279,6 +294,11 @@ async function solve() {
       params['combObject'] = input.value;
   });
   };
+  if(inputRank != null){
+    inputRank.forEach((input,index) =>{
+      params['Rank'] = input.value;
+  });
+};
   console.log(params['combObject']);
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
   console.log("Параметры",params)
@@ -291,7 +311,7 @@ async function solve() {
           },
           body: JSON.stringify({
             params: params,  // Передаем объект параметров
-            alg_id: alg_id   // Передаем идентификатор алгоритма
+            alg_id: alg_id,   // Передаем идентификатор алгоритма
         }),
     });
 

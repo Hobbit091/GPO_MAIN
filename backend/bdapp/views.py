@@ -73,12 +73,12 @@ def search_InterpSelect(request):
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
     
-def search_SeqSelect(request): #Получить список последовательностей объектом, дальше параметрами можно вытягивать все что угодно 
+def search_SeqSelect(request):  
     data = list(sequence_desc.objects.values('OEIS_ID'))  
     return JsonResponse(data, safe=False)
 
 
-def alg_TableTitle(request): #Получить списком то какие поля будут у таблицы
+def alg_TableTitle(request): 
     try:
         alg_name = request.GET.get('alg_name')
         news = algorithm.objects.filter(alg_name=alg_name)
@@ -91,16 +91,16 @@ def alg_TableTitle(request): #Получить списком то какие п
 
 
 def alg_Select(request):
-    interp_id = request.GET.get('interp_id')  # Получаем ID интерпретации из запроса
+    interp_id = request.GET.get('interp_id')  
     if not interp_id:
         return JsonResponse({"error": "interp_id is required"}, status=400)
     
     try:
-        # Находим все записи sequence_tb, связанные с выбранной интерпретацией
+        
         sequences = sequence_tb.objects.filter(Interp_ID=interp_id)
-        algorithm_ids = [seq.Alg_ID_id for seq in sequences]  # Получаем список Alg_ID для связанных записей
+        algorithm_ids = [seq.Alg_ID_id for seq in sequences]  
 
-        # Получаем алгоритмы из модели algorithm по Alg_ID
+        
         algorithms = algorithm.objects.filter(Alg_ID__in=algorithm_ids)
         algorithms_data = [
             {
@@ -115,15 +115,16 @@ def alg_Select(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 def alg_SelectDetails(request):
-    algName = request.GET.get('algName')  # Получаем ID интерпретации из запроса
+    algName = request.GET.get('algName') 
     if not algName:
         return JsonResponse({"error": "В селекторе ничего не заполнено"}, status=400)
     
     try:
-        news = algorithm.objects.filter(alg_name=algName)  # Фильтруем по description
+        news = algorithm.objects.filter(alg_name=algName)  
         algorithms_list = [
             {
                 'id': alg.Alg_ID,
+                'alg_type': alg.alg_type,
                 'name': alg.alg_name,
                 'number_of_parameters': alg.number_of_parameters,
                 'name_param': alg.parameters_name,
@@ -146,13 +147,12 @@ def alg_SelectDetails(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)   
 
-def interp_Select(request):  # Получить интерпретацию по description
+def interp_Select(request): 
     try:
-        description = request.GET.get('description')  # Получаем description из GET-запроса
-        news = interpretation.objects.filter(description=description)  # Фильтруем по description
+        description = request.GET.get('description')  
+        news = interpretation.objects.filter(description=description)  
 
-        if news.exists():  # Проверяем, есть ли результаты
-            # Преобразуем результаты в список словарей
+        if news.exists():  
             interpretations_list = [
                 {
                     'id': interp.Interp_ID,
@@ -164,7 +164,7 @@ def interp_Select(request):  # Получить интерпретацию по 
                 }
                 for interp in news
             ]
-            return JsonResponse(interpretations_list, safe=False)  # Возвращаем данные в формате JSON
+            return JsonResponse(interpretations_list, safe=False)  
         else:
             raise Interpritation_Selector_IDNotFoundException(interpritation_id="")
     except ApplicationException as exception:
@@ -309,7 +309,7 @@ from django.http import JsonResponse
 from asgiref.sync import sync_to_async
 import json
 
-async def execute_with_timeout(code, params, number_of_params):
+async def execute_with_timeout(code, params, number_of_params, alg_type):
     try:
         globals_dict = globals()
         exec(code, globals_dict)  
@@ -318,16 +318,29 @@ async def execute_with_timeout(code, params, number_of_params):
         k = int(params.get('param2')) if params.get('param2') else None
         m = int(params.get('param3')) if params.get('param3') else None
         combObject = params.get('combObject') if params.get('combObject') else None
-        if combObject:
-            combObject = [int(x) for x in combObject.split()]
-        if number_of_params == 1:
-            result = await asyncio.to_thread(globals_dict['Start'], n)
-        elif number_of_params == 2:
-            result = await asyncio.to_thread(globals_dict['Start'], n, k)
-        elif number_of_params == 3:
-            result = await asyncio.to_thread(globals_dict['Start'], n, k, m)
-        elif number_of_params == 4:
-            result = await asyncio.to_thread(globals_dict['Start'], n, k, m, combObject)
+        rank = int(params.get('Rank')) if params.get('Rank') else None
+        print(alg_type)
+        if alg_type == 'Listing':
+            if number_of_params == 1:
+                result = await asyncio.to_thread(globals_dict['Start'], n)
+            elif number_of_params == 2:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k)
+            elif number_of_params == 3:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k, m)
+        elif alg_type == 'Rank':
+            if number_of_params == 1:
+                result = await asyncio.to_thread(globals_dict['Start'], n, combObject)
+            elif number_of_params == 2:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k, combObject)
+            elif number_of_params == 3:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k, m, combObject)
+        elif alg_type == 'Unrank':
+            if number_of_params == 1:
+                result = await asyncio.to_thread(globals_dict['Start'], n, rank)
+            elif number_of_params == 2:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k, rank)
+            elif number_of_params == 3:
+                result = await asyncio.to_thread(globals_dict['Start'], n, k, m, rank)
         else:
             result = 'Некорректное количество параметров'
         return result
@@ -342,16 +355,15 @@ async def solve(request):
 
             alg_id = data.get('alg_id')
             params = data.get('params')
-
             
             news = await sync_to_async(list)(algorithm.objects.filter(Alg_ID=alg_id))
             if news:
                 alg_code = news[0].alg_code
                 number_of_params = news[0].number_of_parameters
-
+                alg_type = news[0].alg_type
                 try:
                     result = await asyncio.wait_for(
-                        execute_with_timeout(alg_code, params, number_of_params),
+                        execute_with_timeout(alg_code, params, number_of_params, alg_type),
                         timeout=20
                     )
                     return JsonResponse(result, safe=False)
