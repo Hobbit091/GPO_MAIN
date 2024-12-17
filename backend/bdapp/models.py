@@ -25,7 +25,7 @@ class interpretation(models.Model):
     example_image = models.ImageField(upload_to='images/', blank=True, null=True)
     example_table = models.TextField(blank=True, null=True)
     example_image_process = ImageSpecField(source='example_image',
-                                      #processors=[ResizeToFill(100, 50)],
+                                      processors=[ResizeToFill(300, 200)],
                                       #format='JPEG',
                                       options={'quality': 60})
      
@@ -55,7 +55,7 @@ class algorithm(models.Model):
     field3_name=models.TextField(default="")
     tree_structure = models.ImageField(upload_to='images/',blank=True, null=True)
     tree_structure_process = ImageSpecField(source='tree_structure',
-                                      processors=[ResizeToFill(600, 600)],
+                                      processors=[ResizeToFill(400, 400)],
                                       #format='JPEG',
                                       options={'quality': 60})
     field4_name=models.TextField(default="")

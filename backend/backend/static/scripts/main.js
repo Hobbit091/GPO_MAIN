@@ -44,35 +44,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     async function loadInterpretations(oeisId) {
       try {
-          const response = await fetch(`/search_interp?oeis_id=${oeisId}`);
-          if (response.ok) {
-              const interpretations = await response.json();
-              const selector = document.querySelector('.main__header-select');
-              selector.innerHTML = ''; // Очищаем текущие опции
-  
-              const addedDescriptions = new Set(); // Создаём Set для отслеживания уникальных interp.desc
-  
-              interpretations.forEach((interp) => {
-                  if (!addedDescriptions.has(interp.desc)) {
-                      const option = document.createElement('option');
-                      option.textContent = interp.desc; // Название интерпретации
-                      option.value = interp.endpoint;   // Устанавливаем эндпоинт как значение
-                      selector.appendChild(option);
-  
-                      // Добавляем interp.desc в Set, чтобы отслеживать добавленные элементы
-                      addedDescriptions.add(interp.desc);
-                  }
-              });
-  
-              // Загружаем детали интерпретаций
-              loadInterpretations_details();
-          } else {
-              console.error('Ошибка при загрузке интерпретаций');
-          }
+        const response = await fetch(`/search_interp?oeis_id=${oeisId}`);
+        if (response.ok) {
+          const interpretations = await response.json();
+          const selector = document.querySelector('.main__header-select');
+          selector.innerHTML = ''; // Очищаем текущие опции
+
+          interpretations.forEach((interp) => {
+            const option = document.createElement('option');
+            option.textContent = interp.desc; // Название интерпретации
+            option.value = interp.endpoint;   // Устанавливаем эндпоинт как значение
+            selector.appendChild(option);
+          });
+
+
+        loadInterpretations_details();
+        } else {
+          console.error('Ошибка при загрузке интерпретаций');
+        }
       } catch (error) {
-          console.error('Произошла ошибка:', error);
+        console.error('Произошла ошибка:', error);
       }
-  }
+    }
+
     async function loadSequence(oeisId) {
         try {
           const response = await fetch(`/search?oeis_id=${oeisId}`);
@@ -129,7 +123,7 @@ async function loadInterpretations_details() {
             <div style="display:none" class="for_interp_id">${interpData[0].id}</div>
             <div>${interpData[0].example_text}</div>
             <div>${interpData[0].example_table}</div>
-            <img src="${interpData[0].example_image}" />
+            <img src="${interpData[0].example_image}" alt = " "/>
           `;
       } else {
         console.error('Ошибка при загрузке последовательности');
