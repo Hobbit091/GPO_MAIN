@@ -50,13 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
           const selector = document.querySelector('.main__header-select');
           selector.innerHTML = ''; // Очищаем текущие опции
 
-          interpretations.forEach((interp) => {
-            const option = document.createElement('option');
-            option.textContent = interp.desc; // Название интерпретации
-            option.value = interp.endpoint;   // Устанавливаем эндпоинт как значение
-            selector.appendChild(option);
-          });
-
+          const addedDescriptions = new Set(); // Создаём Set для отслеживания уникальных interp.desc
+  
+              interpretations.forEach((interp) => {
+                  if (!addedDescriptions.has(interp.desc)) {
+                      const option = document.createElement('option');
+                      option.textContent = interp.desc; // Название интерпретации
+                      option.value = interp.endpoint;   // Устанавливаем эндпоинт как значение
+                      selector.appendChild(option);
+  
+                      // Добавляем interp.desc в Set, чтобы отслеживать добавленные элементы
+                      addedDescriptions.add(interp.desc);
+                  }
+              });
 
         loadInterpretations_details();
         } else {
@@ -106,11 +112,6 @@ async function loadInterpretations_details() {
         const infoWrapper = document.querySelector('.info__block2');
             infoWrapper.innerHTML = `
             <div>${interpData[0].example_text}</div>
-<<<<<<< HEAD
-=======
-            <div>${interpData[0].example_table}</div>
-            <img src="${interpData[0].example_image}" alt = " "/>
->>>>>>> 2097af5a3c1673f24081ab571d9f3cd0970301b5
           `;
       } else {
         console.error('Ошибка при загрузке последовательности');
