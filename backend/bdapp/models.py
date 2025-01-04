@@ -13,8 +13,16 @@ class sequence_desc(models.Model):
     
 class interpretation(models.Model):
     Interp_ID = models.AutoField(primary_key=True)
-    interpretation_name = models.TextField()
-    interpretation_description = CKEditor5Field(verbose_name='Описание', config_name='extends', default='')
+    n_value = models.TextField()
+    description = models.TextField()
+    example_text = models.TextField(blank=True, null=True)
+    example_image = models.ImageField(upload_to='images/', blank=True, null=True)
+    example_table = models.TextField(blank=True, null=True)
+    example_image_process = ImageSpecField(source='example_image',
+                                      #processors=[ResizeToFill(100, 50)],
+                                      #format='JPEG',
+                                      options={'quality': 60})
+     
     def __str__(self):
         return F"{self.Interp_ID}"
 
@@ -34,8 +42,20 @@ class algorithm(models.Model):
     )
     parameters_name = models.TextField(blank=False, null=False,default="N")
     number_of_parameters = models.IntegerField(blank=False, null=False)
-    field_name = models.TextField(default="", blank=True, null=False)
-    field_description = CKEditor5Field(verbose_name='Описание', config_name='extends', default='')
+    field1_name=models.TextField(default="")
+    field1_desc=models.TextField(default="")
+    field2_name=models.TextField(default="")
+    field2_desc=models.TextField(default="")
+    field3_name=models.TextField(default="")
+    tree_structure = models.ImageField(upload_to='images/',blank=True, null=True)
+    tree_structure_process = ImageSpecField(source='tree_structure',
+                                      processors=[ResizeToFill(600, 600)],
+                                      #format='JPEG',
+                                      options={'quality': 60})
+    field4_name=models.TextField(default="")
+    field4_desc=models.TextField(default="")
+    field5_name=models.TextField(default="")
+    field5_desc=models.TextField(default="")
     alg_code = models.TextField(blank=False, null=False)
      
     def __str__(self):
