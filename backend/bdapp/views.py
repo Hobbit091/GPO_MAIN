@@ -37,11 +37,7 @@ def search_sequence(request):
                 'id': news.OEIS_ID,  
                 'name': news.special_title,  
                 'number_of_parameters': news.number_of_parameters,  
-                'explicit_formula_latex': news.explicit_formula_latex,  
-                'recurrent_formula': news.recurrent_formula,  
-                'recurrent_formula_latex': news.recurrent_formula_latex,  
-                'other_formula_latex': news.other_formula_latex,  
-                'generating_function_latex': news.generating_function_latex,  
+                'desc': news.desc,
                })
             return JsonResponse(list_seq, safe=False)
         else:

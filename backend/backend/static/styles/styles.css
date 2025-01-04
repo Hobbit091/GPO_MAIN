@@ -16,6 +16,12 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
 }
+
+.main__header img{
+  width: 100px;
+  height: 70px;
+}
+
 @font-face {
   font-family: lora;
   font-style: normal;
@@ -285,6 +291,8 @@ body {
 .info__desc {
   background-color: #FFFFFF;
   border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
 }
 .main_info_formula
 {

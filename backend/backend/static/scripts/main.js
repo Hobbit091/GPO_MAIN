@@ -26,7 +26,7 @@ async function loadSequenceList() {
         a.textContent = seq.OEIS_ID;
         infoWrapper.appendChild(a);
     });
-    
+
     } else {
       console.error('Ошибка при загрузке последовательности: ', response.status);
     }
@@ -80,19 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const sequenceData = await response.json();
             const infoWrapper = document.querySelector('.info__block1');
             infoWrapper.innerHTML = `
-                  <h4 style="text-decoration:underline"> Начальные значения </h4>
-                  <div>${sequenceData[0].recurrent_formula}</div>
-                  <div>Значения a(n) так известны как ${sequenceData[0].name}</div>
-                  <div>Значения a(n) зависят от ${sequenceData[0].number_of_parameters} параметров</div>
-                  <h4 style="text-decoration:underline"> Основные формулы </h4>
-                  <div style="padding-left:10px"> Явная формула </div>
-                  <div class="main_info_formula"> $$${sequenceData[0].explicit_formula_latex}$$</div>
-                   <div style="padding-left:10px"> Рекуррентная формула: </div>
-                  <div class="main_info_formula">$$${sequenceData[0].recurrent_formula_latex}$$</div>
-                   <div style="padding-left:10px"> Другая формула </div>
-                  <div class="main_info_formula">$$${sequenceData[0].other_formula_latex}$$</div>
-                   <div style="padding-left:10px"> Производящая функция</div>
-                  <div class="main_info_formula">$$${sequenceData[0].generating_function_latex}$$</div>
+                  <div class="info__block1">${sequenceData[0].desc}</div>
             `; 
 
           MathJax.typesetPromise([infoWrapper]).catch((err) => console.log(err.message));
@@ -123,13 +111,7 @@ async function loadInterpretations_details() {
         const interpData = await response.json();
         const infoWrapper = document.querySelector('.info__block2');
             infoWrapper.innerHTML = `
-            <div> Значения a(n) определяет количество ${interpData[0].n_value} элементов</div>
-            <div> Определение интерпретации: ${interpData[0].description} </div>
-            <div> Пример: </div>
-            <div style="display:none" class="for_interp_id">${interpData[0].id}</div>
             <div>${interpData[0].example_text}</div>
-            <div>${interpData[0].example_table}</div>
-            <img src="${interpData[0].example_image}" />
           `;
       } else {
         console.error('Ошибка при загрузке последовательности');
