@@ -55,12 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
               interpretations.forEach((interp) => {
                   if (!addedDescriptions.has(interp.desc)) {
                       const option = document.createElement('option');
-                      option.textContent = interp.desc; // Название интерпретации
+                      option.textContent = interp.interpretation_name; // Название интерпретации
                       option.value = interp.endpoint;   // Устанавливаем эндпоинт как значение
                       selector.appendChild(option);
   
                       // Добавляем interp.desc в Set, чтобы отслеживать добавленные элементы
-                      addedDescriptions.add(interp.desc);
+                      addedDescriptions.add(interp.interpretation_name);
                   }
               });
 
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const sequenceData = await response.json();
             const infoWrapper = document.querySelector('.info__block1');
             infoWrapper.innerHTML = `
-                  <div class="info__block1">${sequenceData[0].desc}</div>
+                  <div class="info__block1">${sequenceData[0].sequence_description}</div>
             `; 
 
           MathJax.typesetPromise([infoWrapper]).catch((err) => console.log(err.message));
@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadInterpretations_details() {
     const selector = document.querySelector('.main__header-select');
-    const interpDesc = selector.options[selector.selectedIndex].text;
+    const interpretation_name = selector.options[selector.selectedIndex].text;
 
     try {
-      const response = await fetch(`/interp?description=${interpDesc}`);
+      const response = await fetch(`/interp?interpretation_name=${interpretation_name}`);
       if (response.ok) {
         const interpData = await response.json();
         const infoWrapper = document.querySelector('.info__block2');
@@ -140,8 +140,8 @@ async function loadAlgorithmsByInterpretation(Interp_ID) {
       
       algorithms.forEach((alg) => {
         const option = document.createElement('option');
-        option.textContent = alg.name; // Название алгоритма
-        option.value = alg.id; // ID алгоритма
+        option.textContent = alg.alg_name; // Название алгоритма
+        option.value = alg.Alg_ID; // ID алгоритма
         selector_alg.appendChild(option);
       });
       loadAlgorithm_details()
@@ -161,7 +161,7 @@ async function loadAlgorithm_details() {
   const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
 
   try {
-    const response = await fetch(`/algDetails?algName=${algName}`);
+    const response = await fetch(`algDetails?algName=${algName}`);
     if (response.ok) {
       const algData = await response.json();
       
@@ -170,21 +170,8 @@ async function loadAlgorithm_details() {
 
       infoWrapper.innerHTML = `
        <div class="func-block__right">
-        <div class="func-block__right-name">${algData[0].field1}</div>
-        <div class="func-block__right-desc">${algData[0].field1_d}</div>
-
-        <div class="func-block__right-name">${algData[0].field2}</div>
-        <div class="func-block__right-desc">${algData[0].field2_d}</div>
-
-        <div class="func-block__right-name">${algData[0].field3}</div>
-        <img style="margin: auto; display: block;"src="${algData[0].field3_d}"/>
-
-        <div class="func-block__right-name">${algData[0].field4}</div>
-        <div class="func-block__right-desc">${algData[0].field4_d}</div>
-
-        <div class="func-block__right-name">${algData[0].field5}</div>
-        <div class="func-block__right-desc">${algData[0].field5_d}</div>
-
+        <div class="func-block__right-name">${algData[0].field_name}</div>
+        <div class="func-block__right-desc">${algData[0].field_description}</div>
       </div>
     `;
     const infoWrapper2 = document.querySelector('.func-block__left-param'); // Контейнер для параметров
@@ -196,7 +183,7 @@ infoWrapper3.innerHTML = '';
 
 
 // Разбиваем параметры на отдельные элементы
-const titles = algData[0].name_param.split(',');
+const titles = algData[0].parameters_name.split(',');
 const algType = algData[0].alg_type;
 console.log(algType);
 // Генерация элементов
@@ -271,7 +258,7 @@ async function solve() {
   const algName = selectorAlg.options[selectorAlg.selectedIndex].text;
   const response = await fetch(`/algDetails?algName=${algName}`);
   const algData = await response.json();
-  var alg_id = algData[0].id
+  var alg_id = algData[0].Alg_ID
   const params = {};
 
   inputs.forEach((input, index) => {
