@@ -9,7 +9,7 @@ class sequence_desc(models.Model):
     sequence_description = CKEditor5Field(verbose_name='Описание', config_name='extends', default='')
     
     def __str__(self):
-        return f"{self.special_title} - {self.OEIS_ID}"
+        return f"{self.OEIS_ID}"
     
 class interpretation(models.Model):
     Interp_ID = models.AutoField(primary_key=True)

@@ -8,7 +8,8 @@ document.getElementById('find').addEventListener('keydown', function (event) {
   }
 });
 
-async function loadSequenceList() {
+ // На главную страницу четыре элемента
+async function loadSequenceList() { 
   try {
     const response = await fetch(`/search_seq`);
     if (response.ok) {
@@ -40,7 +41,7 @@ async function loadSequenceList() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const oeisId = document.querySelector('.main__header-name').textContent.trim();
+    const oeisId = document.querySelector('.main__header-id').textContent.trim();
     
     async function loadInterpretations(oeisId) {
       try {

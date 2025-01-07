@@ -1,5 +1,5 @@
 async function executeSearchQuery() {
-    const query = document.querySelector('.find-input').value.trim();
+    const query = document.querySelector('.find__input').value.trim();
 
     if (query) {
         try {
@@ -26,14 +26,16 @@ async function executeSearchQuery() {
 }
 
 function getQueryParam(param) {
+    console.log("12");
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
 
+
 // Получаем значение параметра "find"
 const searchQuery = getQueryParam('find');
-const headerNameElement = document.querySelector('.main__header-name');
-const errorMessageElement = document.getElementById('error-message');
+const headerNameElement = document.querySelector('.main__header-id');
+const errorMessageElement = document.getElementById('.error-message');
 
 if (searchQuery) {
     // Отображаем найденный запрос

@@ -20,25 +20,27 @@
 
       <div class="main__header-logo">
         <picture class="main__header-picture">
-          <img src="static\assets\images\logo_white.png" class="home__img" alt="CGCAL" width="100px" height="70px" href="index.html" />
+          <a  href="home" > <img src="static\assets\images\logo_white.png" class="home__img" alt="CGCAL" width="100px" height="70px"/></a>
         </picture>
         <div class="main__header-name">
           <a href="#" class="main__header-name-href">❮ На главную</a>
-          A000000
+          <div class="main__header-id"></div>
+          <div id="error-message" style="color: red; display: none;">Запрос не найден.</div> 
         </div>
       </div>
 
       <div class="main__header-selector">
-        <select class="main__header-select">
+        <select class="main__header-select" id="type">
           <option>Комбинаторные интерпретации</option>
           <option>Другой вариант</option>
         </select>
       </div>
 
       <div class="main__header-search-box">
-        <input type="text" placeholder="Введите номер последовательности" class="main__header-search-input">
-        <button class="main__header-search-button">Найти</button>
+        <input type="text" id="find" name="find" placeholder="Введите номер последовательности" class="main__header-search-input find__input"  >
+        <button class="main__header-search-button" onclick="executeSearchQuery()">Найти</button>
       </div>
+
     </div>
   </div>
   <div class="info__wrapper">
@@ -46,15 +48,15 @@
       <div class="info__name">
         Числовая последовательность
       </div>
-      <div class="info__desc">
+      <div class="info__desc info__block1">
       </div>
     </div>
 
-    <div class="info__block">
+    <div class="info__block ">
       <div class="info__name">
         Комбинаторная интерпретация
       </div>
-      <div class="info__desc">
+      <div class="info__desc info__block2">
       </div>
     </div>
   </div>
@@ -106,5 +108,8 @@
     </div>
   </div>
 </body>
+
+<script src="static\scripts\main.js"></script>
+<script src="static\scripts\find.js"></script>
 
 </html>
