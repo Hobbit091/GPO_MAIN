@@ -39,8 +39,8 @@ class algorithm(models.Model):
     alg_code = models.TextField(blank=False, null=False)
      
     def __str__(self):
-        return self.alg_name
-
+        return F"{self.Alg_ID}"
+    
 class sequence_tb(models.Model):
     M_ID = models.ForeignKey(sequence_desc, on_delete=models.CASCADE)
     Alg_ID = models.ForeignKey(algorithm, on_delete=models.CASCADE)

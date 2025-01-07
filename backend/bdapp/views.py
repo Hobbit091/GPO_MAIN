@@ -119,8 +119,8 @@ def alg_SelectDetails(request):
 
 def interp_Select(request): 
     try:
-        description = request.GET.get('interpretation_name')  
-        news = interpretation.objects.filter(description=description)  
+        interpretation_name = request.GET.get('interpretation_name')  
+        news = interpretation.objects.filter(interpretation_name=interpretation_name)  
 
         if news.exists():  
             interpretations_list = [
@@ -132,9 +132,10 @@ def interp_Select(request):
             ]
             return JsonResponse(interpretations_list, safe=False)  
         else:
-            raise Interpritation_Selector_IDNotFoundException(interpritation_id="")
+            raise Interpritation_Selector_IDNotFoundException(interpretation_id="")
     except ApplicationException as exception:
         return HttpResponseBadRequest(content=exception.message)
+    
 import asyncio
 from django.http import JsonResponse
 from asgiref.sync import sync_to_async
