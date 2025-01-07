@@ -164,7 +164,7 @@ async function loadAlgorithmDetails() {
           const params = algData[0].parameters_name.split(',').map(param => param.trim());
           params.forEach(param => {
               const div = document.createElement('div');
-              div.textContent = `${param}=`;
+              div.textContent = `${param} = `;
 
               const input = document.createElement('input');
               input.type = 'number';

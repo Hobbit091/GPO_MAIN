@@ -75,12 +75,23 @@ def search_SeqSelect(request):
 
 def alg_Select(request):
     interp_id = request.GET.get('interp_id')  
+    print(interp_id)
     if not interp_id:
         return JsonResponse({"error": "interp_id is required"}, status=400)
     try:
         sequences = sequence_tb.objects.filter(Interp_ID=interp_id)
-        algorithm_ids = [seq.Alg_ID for seq in sequences]   
-        algorithms = algorithm.objects.filter(Alg_ID=algorithm_ids)
+        print(sequences)
+        algorithm_ids = []
+        for seq in sequences:
+            algorithmId = seq.Alg_ID.Alg_ID
+            algorithm_ids.append(algorithmId)
+        print(algorithm_ids)
+        # algorithms = []
+        # for i in range(len(algorithm_ids)):
+        #     print(i)
+        #     algQuery = algorithm.objects.filter(Alg_ID=algorithm_ids[i])
+        #     algorithms.append(algQuery)
+        algorithms = algorithm.objects.filter(Alg_ID__in=algorithm_ids)
         algorithms_data = [
             {
                 'Alg_ID': alg.Alg_ID,
@@ -90,6 +101,7 @@ def alg_Select(request):
         ]
         return JsonResponse(algorithms_data, safe=False)
     except Exception as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=500)
 
 def alg_SelectDetails(request):

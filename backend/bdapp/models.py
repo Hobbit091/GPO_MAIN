@@ -19,14 +19,16 @@ class interpretation(models.Model):
         return f"{self.interpretation_name}"
     
 class algorithm(models.Model):
+
+
+    Alg_ID = models.AutoField(primary_key=True)
+    alg_name = models.TextField(blank=False, null=False)
+
     ALG_TYPE_CHOICES = [
         ('Listing', 'Listing'),
         ('Rank', 'Rank'),
         ('Unrank', 'Unrank'),
     ]
-
-    Alg_ID = models.AutoField(primary_key=True)
-    alg_name = models.TextField(blank=False, null=False)
     alg_type = models.CharField(
         max_length=10,
         choices=ALG_TYPE_CHOICES,
