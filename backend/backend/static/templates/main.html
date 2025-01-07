@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- 
-1. Подключить статику правильно, как в 9 строчке
-2. Можно увезти хэд и все подключения в какой-нибудь базовый файл (как в ASP.NET)
-3. Темплейты переместить в bdapp
--->
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,56 +19,42 @@
     <div class="main__header">
 
       <div class="main__header-logo">
-
         <picture class="main__header-picture">
-          <a  href="home" > <img src="static\assets\images\logo_white.png" class="home__img" alt="CGCAL" width="100px" height="70px"/></a>
+          <img src="static\assets\images\logo_white.png" class="home__img" alt="CGCAL" width="100px" height="70px" href="index.html" />
         </picture>
-        <div class="main__header-name"></div> <!-- Здесь отображается OEIS ID -->
-        <div id="error-message" style="color: red; display: none;">Запрос не найден.</div> 
+        <div class="main__header-name">
+          <a href="#" class="main__header-name-href">❮ На главную</a>
+          A000000
+        </div>
       </div>
 
       <div class="main__header-selector">
-        <select class="main__header-select" id="type">
+        <select class="main__header-select">
           <option>Комбинаторные интерпретации</option>
           <option>Другой вариант</option>
         </select>
       </div>
 
       <div class="main__header-search-box">
-        <input type="text" id="find" name="find" placeholder="Введите номер последовательности" class="main__header-search-input find-input"  >
-        <button class="main__header-search-button" onclick="executeSearchQuery()">Найти</button>
+        <input type="text" placeholder="Введите номер последовательности" class="main__header-search-input">
+        <button class="main__header-search-button">Найти</button>
       </div>
     </div>
   </div>
   <div class="info__wrapper">
-    <div class="info__block ">
+    <div class="info__block">
       <div class="info__name">
-        Числовая последовательность 
+        Числовая последовательность
       </div>
-      <div class="info__desc info__block1">
-        <h4 style="text-decoration:underline"> Начальные значения </h4>
-        <div>Значения a(n) так известны как</div>
-        <div>Значения a(n) зависят от  параметров</div>
-        <h4 style="text-decoration:underline"> Основные формулы </h4>
-        <div> Явная формула </div>
-        <div class="main_info_formula"></div>
-         <div> Рекуррентная формула: </div>
-        <div class="main_info_formula"></div>
-         <div> Другая формула </div>
-        <div class="main_info_formula"></div>
-         <div> Производящая функция</div>
-        <div class="main_info_formula"></div>
+      <div class="info__desc">
       </div>
     </div>
 
-    <div class="info__block ">
+    <div class="info__block">
       <div class="info__name">
         Комбинаторная интерпретация
       </div>
-      <div class="info__desc info__block2">
-        <div class="info__block__text"> Значения a(n) определяет количество элементов</div>
-        <div class="info__block__text"> Определение интерпретации: </div>
-        <div class="info__block__text"> Пример: </div>
+      <div class="info__desc">
       </div>
     </div>
   </div>
@@ -80,11 +62,9 @@
     <div class="func-block__left">
 
       <div class="func-block__left-choose">
-        <div class="h4" class="func-block__left-text">Алгоритм комбинаторной генерации</div>
+        <div class="func-block__left-text ">Алгоритм комбинаторной генерации</div>
         <select class="func-block__left-select">
-          <option>Rank</option>
-          <option>Unrank</option>
-          <option>Listing</option>
+          <option></option>
         </select>
       </div>
 
@@ -92,51 +72,39 @@
       <div class="func-block__left-functional">
         <div class="func-block__left-param">
           <div> N=
-            <input type="number" class="func-block__left-param-input">
+            <input type="text" class="func-block__left-param-input">
           </div>
           <div> M=
-            <input type="number" class="func-block__left-param-input">
+            <input type="text" class="func-block__left-param-input">
           </div>
         </div>
         <div class="func-block__left-object">
           Комбинаторный объект
         </div>
-        <input type="text" class="func-block__left-param-input1 func-block__left-param-input--wd500">
+        <input type="text" class="func-block__left-param-input func-block__left-param-input--wd500">
       </div>
 
       <div class="func-block__left-solve">
-        <button class="func-block__left-button" onclick="solve()">
+        <button class="func-block__left-button">
           Вычислить
         </button>
-        <textarea class="func-block__left-main_textarea" id="func-block__left-main_textarea" readonly>
+        <textarea class="func-block__left-main_textarea" id="" readonly>
             </textarea>
       </div>
     </div>
 
     <div class="func-block__right">
-      <div class="func-block__right-name">Описание алгоритма</div>
-      <div class="func-block__right-desc">Количества параметров: 2</div>
-
-      <div class="func-block__right-name">Формула мощности</div>
-      <div class="func-block__right-desc">Fn = Fn - 1 + Fn - 2</div>
-
-      <div class="func-block__right-name">Структура дерева И/ИЛИ</div>
-      <div class="func-block__right-desc"></div>
+      <div class="func-block__right-name">Верхний блок</div>
+      <div class="func-block__right-desc" contenteditable>Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что Противоположная точка зрения подразумевает, что многие известные личности разоблачены. Следует отметить, что высокотехнологичная концепция общественного уклада создаёт необходимость включения в производственный план целого ряда внеочередных мероприятий с учётом комплекса новых предложений. Повседневная практика показывает, что экономическая повестка сегодняшнего дня прекрасно подходит для реализации поэтапного и последовательного развития общества. И нет сомнений, что сделанные на базе интернет-аналитики выводы неоднозначны и будут функционально разнесены на независимые элементы. Картельные сговоры не допускают ситуации, при которой непосредственные участники технического прогресса подвергнуты целой серии независимых исследований. Ясность нашей позиции очевидна: убеждённость некоторых оппонентов требует определения и уточнения экономической целесообразности принимаемых решений. Как принято считать, интерактивные прототипы будут призваны к ответу. В частности, новая модель организационной деятельности позволяет оценить значение соответствующих условий активизации! В частности, новая модель организационной деятельности прекрасно подходит для реализации прогресса профессионального сообщества. Безусловно, повышение уровня гражданского сознания представляет собой интересный эксперимент проверки стандартных подходов. Таким образом, консультация с широким активом говорит о возможностях вывода текущих активов. Внезапно, явные признаки победы институционализации, вне зависимости от их уровня, должны быть разоблачены. Принимая во внимание показатели успешности, курс на социально-ориентированный национальный проект требует от нас анализа своевременного выполнения сверхзадачи. Как принято считать, ключевые особенности структуры проекта призваны к ответу. Идейные соображения высшего порядка, а также существующая теория играет важную роль в формировании благоприятных перспектив.Противоположная точка зрения подразумевает, что многие известные личности разоблачены. Следует отметить, что высокотехнологичная концепция общественного уклада создаёт необходимость включения в производственный план целого ряда внеочередных мероприятий с учётом комплекса новых предложений. Повседневная практика показывает, что экономическая повестка сегодняшнего дня прекрасно подходит для реализации поэтапного и последовательного развития общества. И нет сомнений, что сделанные на базе интернет-аналитики выводы неоднозначны и будут функционально разнесены на независимые элементы. Картельные сговоры не допускают ситуации, при которой непосредственные участники технического прогресса подвергнуты целой серии независимых исследований. Ясность нашей позиции очевидна: убеждённость некоторых оппонентов требует определения и уточнения экономической целесообразности принимаемых решений. Как принято считать, интерактивные прототипы будут призваны к ответу. В частности, новая модель организационной деятельности позволяет оценить значение соответствующих условий активизации! В частности, новая модель организационной деятельности прекрасно подходит для реализации прогресса профессионального сообщества. Безусловно, повышение уровня гражданского сознания представляет собой интересный эксперимент проверки стандартных подходов. Таким образом, консультация с широким активом говорит о возможностях вывода текущих активов. Внезапно, явные признаки победы институционализации, вне зависимости от их уровня, должны быть разоблачены. Принимая во внимание показатели успешности, курс на социально-ориентированный национальный проект требует от нас анализа своевременного выполнения сверхзадачи. Как принято считать, ключевые особенности структуры проекта призваны к ответу. Идейные соображения высшего порядка, а также существующая теория играет важную роль в формировании благоприятных перспектив.</div>
     </div>
   </div>
   <div class="footer__wrapper">
     <div class="footer">
       <div class="footer__text">
-        Последнее обновление 11.09.2024
+        Последнее обновление
       </div>
     </div>
   </div>
-
-  <script src="static\scripts\main.js"></script>
-  <script src="static\scripts\find.js"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </body>
 
 </html>
-

@@ -21,36 +21,35 @@ body {
   width: 100px;
   height: 70px;
 }
-
 @font-face {
-  font-family: lora;
+  font-family: 'Lora';
   font-style: normal;
   font-weight: 400;
-  src: local('Lora'), url(https://fonts.cdnfonts.com/s/13623/Lora.woff) format('woff');
+  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora.woff') format('woff');
 }
 @font-face {
-  font-family: lora;
+  font-family: 'Lora';
   font-style: normal;
   font-weight: 400;
-  src: local('Lora'), url(https://fonts.cdnfonts.com/s/13623/Lora-Regular.woff) format('woff');
+  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Regular.woff') format('woff');
 }
 @font-face {
-  font-family: lora;
+  font-family: 'Lora';
   font-style: italic;
   font-weight: 400;
-  src: local('Lora'), url(https://fonts.cdnfonts.com/s/13623/Lora-Italic.woff) format('woff');
+  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Italic.woff') format('woff');
 }
 @font-face {
-  font-family: lora;
+  font-family: 'Lora';
   font-style: normal;
   font-weight: 700;
-  src: local('Lora'), url(https://fonts.cdnfonts.com/s/13623/Lora-Bold.woff) format('woff');
+  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Bold.woff') format('woff');
 }
 @font-face {
-  font-family: lora;
+  font-family: 'Lora';
   font-style: italic;
   font-weight: 700;
-  src: local('Lora'), url(https://fonts.cdnfonts.com/s/13623/Lora-BoldItalic.woff) format('woff');
+  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-BoldItalic.woff') format('woff');
 }
 .footer {
   display: -webkit-box;
@@ -177,7 +176,16 @@ body {
   text-align: center;
   color: #3B388D;
 }
-
+.home__about {
+  margin-top: 120px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 25px;
+}
 .main__header {
   top: 0;
   left: 0;
@@ -209,6 +217,23 @@ body {
   color: white;
   font-size: 25px;
 }
+.main__header-name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  text-align: center;
+  gap: 3px;
+}
+.main__header-name-href {
+  font-size: 11px;
+  color: inherit;
+  text-decoration: none;
+  display: none;
+}
 .main__header-selector {
   max-width: 640px;
   width: 100%;
@@ -226,15 +251,29 @@ body {
   max-width: 500px;
   width: 100%;
   max-height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 10px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 .main__header-search-input {
-  width: 60%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  max-width: 200px;
+  width: 100%;
   height: 40px;
+  padding: 5px;
+  font-size: 14px;
 }
 .main__header-search-button {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   width: 75px;
   height: 45px;
   background-color: black;
@@ -242,6 +281,8 @@ body {
   color: white;
   font-family: 'Lora', 'Regular', sans-serif;
   font-size: 13px;
+  text-align: center;
+  cursor: pointer;
 }
 .main__header-search-button:hover {
   background-color: gray;
@@ -249,6 +290,7 @@ body {
 .info__wrapper {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  width: 100%;
   max-width: 1820px;
   margin-left: auto;
   margin-right: auto;
@@ -257,17 +299,21 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100%;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 2%;
 }
 .info__block {
   width: 100%;
+  border-color: #C6CDB7;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
 }
 .info__name {
   display: -webkit-box;
@@ -283,32 +329,18 @@ body {
   text-transform: uppercase;
   background-color: #9FC53A;
   width: 100%;
-  height: 85px;
-  border-radius: 10px 10px 0 0;
+  height: 50px;
+  border-radius: 8px 8px 0 0;
   font-weight: lighter;
-  font-size: 25px;
+  font-size: 20px;
 }
 .info__desc {
   background-color: #FFFFFF;
   border-radius: 0 0 10px 10px;
-  display: flex;
-  flex-direction: column;
-}
-.main_info_formula
-{
-  display: flex;
-  align-items: end;
-  padding-left: 50px;
 }
 .info__block {
   margin-bottom: 20px;
 }
-
-.info__block__text{
-  padding-left: 10px;
-  gap: 5px;
-}
-
 .func-block-wrapper {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -332,14 +364,6 @@ body {
   gap: 2%;
 }
 .func-block__left {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  max-width: 1820px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 600px;
   max-width: 840px;
   width: 100%;
   background-color: #3B388D;
@@ -356,7 +380,28 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding-top: 15px;
+  border-style: solid;
+  border-radius: 10px;
+  border: 0px;
+  gap: 0px;
+}
+.func-block__left-text {
+  width: 100%;
+  max-width: 1920px;
+  background-color: #9FC53A;
+  color: black;
+  height: 50px;
+  font-size: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
   border-style: solid;
   border-radius: 10px;
   border: 0px;
@@ -376,7 +421,7 @@ body {
           align-items: center;
   gap: 15px;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 .func-block__left-functional {
   display: -webkit-box;
@@ -389,11 +434,9 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: 15px;
+  gap: 5px;
   width: 100%;
-  margin-bottom: 40px;
-  justify-content: space-around;
-  align-items: center;
+  margin-bottom: 20px;
 }
 .func-block__left-select {
   max-width: 500px;
@@ -414,23 +457,8 @@ body {
       -ms-flex-direction: row;
           flex-direction: row;
   margin-bottom: 15px;
-  justify-content: space-between;
-  gap: 15px;
 }
 .func-block__left-param-input {
-  width: 40px;
-  height: 20px;
-  background-color: #cfcde8;
-  border-style: solid;
-  border-radius: 5px;
-}.func-block__left-param-input1 {
-  width: 40px;
-  height: 20px;
-  background-color: #cfcde8;
-  border-style: solid;
-  border-radius: 5px;
-}
-.func-block__left-param-input2 {
   width: 40px;
   height: 20px;
   background-color: #cfcde8;
@@ -452,7 +480,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: 40px;
+  gap: 10px;
   width: 100%;
 }
 .func-block__left-button {
@@ -469,10 +497,9 @@ body {
   background-color: gray;
 }
 .func-block__left-main_textarea {
-  max-width: 900px;
-  text-align: center;
+  max-width: 700px;
   width: 100%;
-  min-height: 200px;
+  min-height: 400px;
   resize: none;
 }
 .func-block__right {
@@ -487,6 +514,9 @@ body {
   text-transform: uppercase;
 }
 .func-block__right-name {
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 0;
   background-color: #9FC53A;
   height: 50px;
   font-size: 20px;
@@ -501,21 +531,31 @@ body {
           justify-content: center;
   text-align: center;
 }
-
-table {
-  width: 30%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
+.func-block__right-desc {
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #1b1919 #f1f1f1;
+  /* Firefox */
+  overflow: auto;
+  height: 600px;
 }
-th, td {
-  border: 1px solid black;
-  text-align: center;
-  padding: 8px;
+.func-block__right::-webkit-scrollbar {
+  width: 10px;
 }
-th {
-  background-color: #d6e0f5; /* светло-синий цвет */
+.func-block__right::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+  border: 2px solid #f1f1f1;
 }
-
+.func-block__right::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+.func-block__right::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
 @media (max-width:1659px) {
   .main__header {
     -webkit-box-orient: horizontal;
@@ -528,9 +568,6 @@ th {
 @media (max-width:1019px) {
   .main__header {
     margin-bottom: 30px;
-  }
-  .func-block__right-name {
-    font-size: 15px;
   }
 }
 @media (max-width:959px) {
@@ -554,19 +591,28 @@ th {
         align-self: center;
     margin-top: 15px;
   }
-  .func-block__left {
+  .main__header-logo {
+    font-size: 20px;
+  }
+  .info__name {
+    font-size: 15px;
+    text-align: center;
+  }
+  .func-block__left-text {
+    font-size: 15px;
+    text-align: center;
+  }
+  .func-block__right-name {
     font-size: 15px;
     text-align: center;
   }
 }
 @media (max-width:767px) {
-  .main__header-search-button {
-    width: 55px;
-    font-size: 10px;
-    text-align: center;
-  }
-  .info__name {
-    font-size: 20px;
+  .info__wrapper {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
   .func-block-wrapper {
     display: -webkit-box;
@@ -578,6 +624,22 @@ th {
             flex-direction: column-reverse;
     gap: 50px;
     margin-bottom: 100px;
+  }
+  .func-block__right-desc {
+    height: 300px;
+  }
+}
+@media (max-width:649px) {
+  .main__header-picture {
+    display: none;
+  }
+  .main__header-logo {
+    font-size: 17px;
+  }
+  .main__header-name-href {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 @media (max-width:599px) {
@@ -591,12 +653,12 @@ th {
     font-size: 14px;
   }
   .info__name {
-    font-size: 15px;
+    font-size: 13px;
   }
-  .func-block__left {
-    font-size: 10px;
+  .func-block__left-text {
+    font-size: 13px;
   }
   .func-block__right-name {
-    font-size: 10px;
+    font-size: 13px;
   }
 }
