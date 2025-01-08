@@ -309,6 +309,7 @@ body {
   gap: 2%;
 }
 .info__block {
+  max-width: 840px;
   width: 100%;
   border-color: #C6CDB7;
   border-radius: 10px;
@@ -337,6 +338,10 @@ body {
 .info__desc {
   background-color: #FFFFFF;
   border-radius: 0 0 10px 10px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  box-sizing: border-box;
 }
 .info__block {
   margin-bottom: 20px;
