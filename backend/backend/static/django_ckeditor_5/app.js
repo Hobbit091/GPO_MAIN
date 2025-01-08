@@ -110,28 +110,6 @@ function createEditors(element = document.body) {
                 plugins: [ Image, ImageResizeEditing, ImageResizeHandles],
                 image: {
                     resizeUnit: "%",
-                    resizeOptions: [
-                        {
-                            name: 'resizeImage:original',
-                            value: null,
-                            label: 'Original'
-                        },
-                        {
-                            name: 'resizeImage:custom',
-                            label: 'Custom',
-                            value: 'custom'
-                        },
-                        {
-                            name: 'resizeImage:40',
-                            value: '40',
-                            label: '40%'
-                        },
-                        {
-                            name: 'resizeImage:60',
-                            value: '60',
-                            label: '60%'
-                        }
-                    ],
                     styles: {
                         options: [
                             { name: 'Resize', title: 'Resize', className: 'Resize' },

@@ -457,6 +457,7 @@ body {
       -ms-flex-direction: row;
           flex-direction: row;
   margin-bottom: 15px;
+  gap: 7px;
 }
 .func-block__left-param-input {
   width: 40px;
@@ -511,7 +512,6 @@ body {
   border-style: solid;
   color: black;
   font-family: 'Lora', 'Regular', sans-serif;
-  text-transform: uppercase;
 }
 .func-block__right-name {
   border-style: solid;
@@ -520,6 +520,8 @@ body {
   background-color: #9FC53A;
   height: 50px;
   font-size: 20px;
+  text-align: center;
+  text-transform: uppercase;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -529,7 +531,6 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  text-align: center;
 }
 .func-block__right-desc {
   scrollbar-width: thin;

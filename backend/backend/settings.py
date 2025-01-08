@@ -148,6 +148,8 @@ CKEDITOR_5_CUSTOM_CSS = 'backend\backend\static\styles\ckeditor5_styles.css' # o
 #CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage" # optional
 CKEDITOR_5_CONFIGS = {
     'default': {
+        'height': '100%',
+        'width': '100%',
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
                     'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
 
