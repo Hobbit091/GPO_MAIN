@@ -2,6 +2,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
   // Load the sequence list on the home page
   await loadSequenceList();
+  await loadLastUpdate();
+  
 
   // Extract OEIS ID and initialize data on the main page
   const oeisId = document.querySelector('.main__header-id')?.textContent.trim();
@@ -14,6 +16,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Set up event listeners
   setupEventListeners();
 });
+
+async function loadLastUpdate(){
+    const footerText = document.querySelector('.footer__text');
+
+    const lastUpdateDate = new Date().toLocaleDateString('ru-RU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    }); 
+    
+    footerText.textContent += `: ${lastUpdateDate}`;
+}
 
 // Load the sequence list on the home page
 async function loadSequenceList() {

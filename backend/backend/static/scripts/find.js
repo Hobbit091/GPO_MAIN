@@ -40,6 +40,7 @@ const errorMessageElement = document.getElementById('.error-message');
 if (searchQuery) {
     // Отображаем найденный запрос
     headerNameElement.textContent = searchQuery;
+    headerNameElement.href = `/main?find=${searchQuery}`;
 } else {
     // Показываем сообщение об ошибке, если параметра нет
     errorMessageElement.style.display = 'block';
