@@ -380,7 +380,6 @@ body {
   background-color: #3B388D;
   color: #B2B1D8;
   font-family: 'Lora', 'Regular', sans-serif;
-  text-transform: uppercase;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -416,6 +415,7 @@ body {
   border-style: solid;
   border-radius: 10px;
   border: 0px;
+  text-transform: uppercase;
 }
 .func-block__left-choose {
   display: -webkit-box;
@@ -450,7 +450,7 @@ body {
   margin-bottom: 20px;
 }
 .func-block__left-select {
-  max-width: 500px;
+  max-width: 700px;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -469,6 +469,7 @@ body {
           flex-direction: row;
   margin-bottom: 15px;
   gap: 7px;
+  text-transform: lowercase;
 }
 .func-block__left-param-input {
   width: 40px;
@@ -479,7 +480,7 @@ body {
 }
 .func-block__left-param-input--wd500 {
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
 }
 .func-block__left-solve {
   display: -webkit-box;

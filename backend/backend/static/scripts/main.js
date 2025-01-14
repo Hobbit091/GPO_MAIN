@@ -179,6 +179,7 @@ async function loadAlgorithmDetails() {
           params.forEach(param => {
               const div = document.createElement('div');
               div.textContent = `${param} = `;
+              div.style.fontStyle='italic';
 
               const input = document.createElement('input');
               input.type = 'number';
@@ -197,7 +198,7 @@ async function loadAlgorithmDetails() {
               funcWrapper.append(objectDiv, objectInput);
           } else if (algData[0].alg_type === 'Unrank') {
               const rankDiv = document.createElement('div');
-              rankDiv.textContent = 'Ранг';
+              rankDiv.textContent = 'Ранг комбинаторного объекта';
               const rankInput = document.createElement('input');
               rankInput.type = 'number';
               rankInput.classList.add('func-block__left-param-input2');
