@@ -26,7 +26,6 @@ async function executeSearchQuery() {
 }
 
 function getQueryParam(param) {
-    console.log("12");
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }

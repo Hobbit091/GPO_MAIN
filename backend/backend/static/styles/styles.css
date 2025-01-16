@@ -25,31 +25,31 @@ body {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 400;
-  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora.woff') format('woff');
+  src: local('Lora'), format('woff');
 }
 @font-face {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 400;
-  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Regular.woff') format('woff');
+  src: local('Lora'), format('woff');
 }
 @font-face {
   font-family: 'Lora';
   font-style: italic;
   font-weight: 400;
-  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Italic.woff') format('woff');
+  src: local('Lora'),  format('woff');
 }
 @font-face {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 700;
-  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-Bold.woff') format('woff');
+  src: local('Lora'),  format('woff');
 }
 @font-face {
   font-family: 'Lora';
   font-style: italic;
   font-weight: 700;
-  src: local('Lora'), url('https://fonts.cdnfonts.com/s/13623/Lora-BoldItalic.woff') format('woff');
+  src: local('Lora'),  format('woff');
 }
 .footer {
   display: -webkit-box;
@@ -371,7 +371,7 @@ body {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
   gap: 2%;
 }
 .func-block__left {
@@ -413,7 +413,7 @@ body {
           justify-content: center;
   text-align: center;
   border-style: solid;
-  border-radius: 10px;
+  border-radius: 8px 8px 0 0;
   border: 0px;
   text-transform: uppercase;
 }
@@ -527,7 +527,7 @@ body {
 }
 .func-block__right-name {
   border-style: solid;
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0;
   border-width: 0;
   background-color: #9FC53A;
   height: 50px;

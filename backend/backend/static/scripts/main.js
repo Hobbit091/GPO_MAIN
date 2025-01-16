@@ -107,7 +107,6 @@ async function loadInterpretationsDetails() {
   const interpretationName = selector.options[selector.selectedIndex]?.text;
 
   try {
-      console.log(interpretationName);
       const response = await fetch(`/interp?interpretation_name=${interpretationName}`);
       if (response.ok) {
           const interpData = await response.json();
@@ -116,6 +115,7 @@ async function loadInterpretationsDetails() {
               <div style="display:none" class="for_interp_id">${interpData[0].id}</div>
               <div>${interpData[0].interpretation_description}</div>
           `;
+          await MathJax.typesetPromise([infoWrapper]);
       } else {
           console.error('Error loading interpretation details.');
       }
@@ -171,7 +171,7 @@ async function loadAlgorithmDetails() {
               <div class="func-block__right-name">${algData[0].field_name}</div>
               <div class="func-block__right-desc">${algData[0].field_description}</div>
           `;
-
+          await MathJax.typesetPromise([infoWrapper]);
           paramsWrapper.innerHTML = '';
           funcWrapper.innerHTML = '';
 
