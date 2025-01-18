@@ -171,10 +171,11 @@ async function loadAlgorithmDetails() {
               <div class="func-block__right-name">${algData[0].field_name}</div>
               <div class="func-block__right-desc">${algData[0].field_description}</div>
           `;
-          await MathJax.typesetPromise([infoWrapper]);
+          
           paramsWrapper.innerHTML = '';
           funcWrapper.innerHTML = '';
-
+          await MathJax.typesetPromise([infoWrapper]);
+          
           const params = algData[0].parameters_name.split(',').map(param => param.trim());
           params.forEach(param => {
               const div = document.createElement('div');
