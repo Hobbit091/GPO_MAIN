@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Extract OEIS ID and initialize data on the main page
   const oeisId = document.querySelector('.main__header-id')?.textContent.trim();
   if (oeisId) {
-      await loadInterpretations(oeisId);
       await loadSequence(oeisId);
+      await loadInterpretations(oeisId);
       await loadAlgorithmsByInterpretation();
   }
 
@@ -19,14 +19,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadLastUpdate(){
     const footerText = document.querySelector('.footer__text');
-
-    const lastUpdateDate = new Date().toLocaleDateString('ru-RU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    }); 
+    fetch("/checkDate")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch last update time.");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data.last_update) {
+                footerText.textContent = `Последнее обновление: ${data.last_update}`;
+            } else {
+                footerText.textContent = "Не удалось получить время обновления.";
+            }
+        })
+//     const lastUpdateDate = new Date().toLocaleDateString('ru-RU', {
+//         year: 'numeric',
+//         month: 'long',
+//         day: 'numeric',
+//     }
+// ); 
     
-    footerText.textContent += `: ${lastUpdateDate}`;
 }
 
 // Load the sequence list on the home page

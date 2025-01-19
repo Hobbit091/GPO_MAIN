@@ -13,6 +13,9 @@ import environ
 import os
 from pathlib import Path
 
+DATETIME_FORMAT="%d-%m-%Y%H:%M:%S"
+L10N=False
+USE_TZ=True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

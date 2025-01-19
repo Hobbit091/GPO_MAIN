@@ -13,7 +13,7 @@ urlpatterns = [
     path('interp',views.interp_Select),
     path('alg',views.alg_Select),
     path('algDetails',views.alg_SelectDetails),
-    
+    path('checkDate',views.check_date),
      path('main', views.main_view, name='main')
 ]
     

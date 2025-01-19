@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.utils.timezone import localtime
 
 from django.template import loader
 from django.shortcuts import render
@@ -18,6 +19,7 @@ from bdapp.models import algorithm
 from django.http import HttpResponseBadRequest
 from threading import Timer
 import asyncio
+import pytz
 
 
 def show(request): #Заглушка, чтобы загружать стартову страницу
@@ -25,6 +27,25 @@ def show(request): #Заглушка, чтобы загружать старто
     context = {}
     rendered_page = template.render(context, request)
     return HttpResponse(rendered_page)
+
+def check_date(request):
+    try:
+        # Получение времени последнего обновления из всех моделей
+        sequence_desc_time = sequence_desc.objects.latest('update_date_sequence_desc').update_date_sequence_desc
+        sequence_tb_time = sequence_tb.objects.latest('update_date_sequence_tb').update_date_sequence_tb
+        interpretation_time = interpretation.objects.latest('update_date_interpretation').update_date_interpretation
+        algorithm_time = algorithm.objects.latest('update_date_algorithm').update_date_algorithm
+
+        # Находим максимальное время среди всех обновлений
+        latest_time = max(sequence_desc_time, sequence_tb_time, interpretation_time, algorithm_time)
+        latest_time_local = localtime(latest_time, timezone=pytz.timezone('Asia/Tomsk'))  # Преобразуем в локальное время
+
+        return JsonResponse({
+            'last_update': latest_time_local.strftime('%d-%m-%Y %H:%M:%S')
+        })
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def search_sequence(request): 
@@ -75,22 +96,14 @@ def search_SeqSelect(request):
 
 def alg_Select(request):
     interp_id = request.GET.get('interp_id')  
-    print(interp_id)
     if not interp_id:
         return JsonResponse({"error": "interp_id is required"}, status=400)
     try:
         sequences = sequence_tb.objects.filter(Interp_ID=interp_id)
-        print(sequences)
         algorithm_ids = []
         for seq in sequences:
             algorithmId = seq.Alg_ID.Alg_ID
             algorithm_ids.append(algorithmId)
-        print(algorithm_ids)
-        # algorithms = []
-        # for i in range(len(algorithm_ids)):
-        #     print(i)
-        #     algQuery = algorithm.objects.filter(Alg_ID=algorithm_ids[i])
-        #     algorithms.append(algQuery)
         algorithms = algorithm.objects.filter(Alg_ID__in=algorithm_ids)
         algorithms_data = [
             {
@@ -163,7 +176,6 @@ async def execute_with_timeout(code, params, number_of_params, alg_type):
         m = int(params.get('param3')) if params.get('param3') else None
         combObject = params.get('combObject') if params.get('combObject') else None
         rank = int(params.get('Rank')) if params.get('Rank') else None
-        print(alg_type)
         if alg_type == 'Listing':
             if number_of_params == 1:
                 result = await asyncio.to_thread(globals_dict['Start'], n)
