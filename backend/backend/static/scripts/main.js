@@ -51,7 +51,7 @@ async function loadSequenceList() {
           const infoWrapper = document.querySelector('.home__find-href');
           infoWrapper.innerHTML = '';
 
-          sequenceData.slice(0, 4).forEach(seq => {
+          sequenceData.slice(-4).forEach(seq => {
               const a = document.createElement('a');
               a.classList.add('home__find-href-content');
               a.href = `/main?find=${seq.OEIS_ID}`;
