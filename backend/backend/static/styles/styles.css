@@ -569,6 +569,19 @@ body {
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
           box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+th {
+  background-color: #d6e0f5; /* светло-синий цвет */
+}
 @media (max-width:1659px) {
   .main__header {
     -webkit-box-orient: horizontal;
