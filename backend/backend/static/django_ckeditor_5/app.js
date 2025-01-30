@@ -1,5 +1,5 @@
-import { ClassicEditor, Image, ImageResizeEditing, ImageResizeHandles } from './src/ckeditor';
-import ClassicEditor from './src/ckeditor';
+import { ClassicEditor, SourceEditing, Image, ImageResizeEditing, ImageResizeHandles, GeneralHtmlSupport} from './src/ckeditor';
+import {ClassicEditor, SourceEditing, GeneralHtmlSupport} from './src/ckeditor';
 import './src/override-django.css';
 
 window.ClassicEditor = ClassicEditor;
@@ -107,7 +107,17 @@ function createEditors(element = document.body) {
             editorEl,
             config,
             {
-                plugins: [ Image, ImageResizeEditing, ImageResizeHandles],
+                plugins: [GeneralHtmlSupport, SourceEditing, Undo, Alignment, Image, ImageResizeEditing, ImageResizeHandles],
+                htmlSupport: {
+                    allow: [
+                        {
+                            name: /.*/,
+                            attributes: true,
+                            classes: true,
+                            styles: true
+                        }
+                    ]
+                },
                 image: {
                     resizeUnit: "%",
                     styles: {
@@ -115,7 +125,9 @@ function createEditors(element = document.body) {
                             { name: 'Resize', title: 'Resize', className: 'Resize' },
                         ]
                     },
-                }
+                },
+                htmlSupport: true,
+                allowedContent: true
             }
         ).then(editor => {
             const textarea = document.querySelector(`#${editorEl.id}`);

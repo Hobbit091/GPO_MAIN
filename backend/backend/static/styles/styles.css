@@ -348,6 +348,7 @@ body {
   word-wrap: break-word;
   word-break: break-word;
   box-sizing: border-box;
+  padding: 10px;
 }
 .info__block {
   margin-bottom: 20px;
@@ -463,6 +464,8 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 23px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
@@ -493,8 +496,9 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: 10px;
+  gap: 30px;
   width: 100%;
+  padding-bottom: 50px;
 }
 .func-block__left-button {
   width: 150px;
@@ -551,6 +555,7 @@ body {
   /* Firefox */
   overflow: auto;
   height: 600px;
+  padding: 10px;
 }
 .func-block__right::-webkit-scrollbar {
   width: 10px;
