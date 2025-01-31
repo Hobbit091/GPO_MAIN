@@ -157,7 +157,12 @@ CKEDITOR_5_CONFIGS = {
                     'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
 
     },
-    'extends': {
+   "extends": {
+        "htmlSupport": {
+            "allow": [
+                {"name": "/.*/", "attributes": True, "classes": True, "styles": True}
+            ]
+        },
         'blockToolbar': [
             'paragraph', 'heading1', 'heading2', 'heading3',
             '|',
